@@ -343,7 +343,7 @@ let ALIAS=[];
 function attiva(d){
   DATA=d;P=Object.fromEntries(DATA.permessi.map(p=>[p.id,p]));INDICE=null;
   const ras=document.getElementById("r-as");if(ras)ras.value="";
-  ALIAS=[];DATA.permessi.forEach(p=>(p.alias||[]).forEach(a=>ALIAS.push({id:p.id,a:norm(a)})));ALIAS.sort((x,y)=>y.a.length-x.a.length);
+  ALIAS=[];DATA.permessi.forEach(p=>(p.alias||[]).forEach(a=>ALIAS.push({id:p.id,a:norm(a),debole:(p.aliasDeboli||[]).includes(a)})));ALIAS.sort((x,y)=>y.a.length-x.a.length);
   $("#esempi").innerHTML=DATA.esempi.map(e=>`<button>${esc(e)}</button>`).join("");
   $$("#esempi button").forEach(b=>b.onclick=()=>{$("#q").value=b.textContent;rispondi(b.textContent)});
 }
@@ -351,16 +351,19 @@ function trovaPermessi(q){
   let t=" "+norm(q).replace(/[^a-z0-9]+/g," ")+" ";const usati=[];const trovati=[];
   for(const al of ALIAS){let from=0;const pat=" "+al.a+" ";let p;
     while((p=t.indexOf(pat,from))>=0){const fine=p+pat.length;
-      if(!usati.some(([s,e])=>p<e&&fine>s)){usati.push([p,fine]);trovati.push({id:al.id,pos:p,alias:al.a,prima:t.slice(Math.max(0,p-12),p)})}
+      if(!usati.some(([s,e])=>p<e&&fine>s)){usati.push([p,fine]);trovati.push({id:al.id,pos:p,alias:al.a,debole:al.debole,prima:t.slice(Math.max(0,p-12),p)})}
       from=fine-1}}
   trovati.sort((a,b)=>a.pos-b.pos);
-  const unici=[];trovati.forEach(x=>{if(!unici.some(u=>u.id===x.id))unici.push(x)});return unici;
+  const unici=[];trovati.forEach(x=>{const u=unici.find(u=>u.id===x.id);if(!u)unici.push(x);else if(u.debole&&!x.debole)Object.assign(u,x)});
+  const forti=unici.filter(x=>!x.debole);
+  return forti.length?forti:unici;
 }
 const INTENTI=[
+ ["ricongiungimento",/\b(ricongiung|portare (in italia )?(la moglie|il marito|i figli|la famiglia|il coniuge|i genitori)|far venire)/],
  ["conversione",/\b(convert|conversion|trasform|passare|passaggio|cambiar|cambio (di |del )?(permesso|titolo|motivo)|mutare|tramutare)/],
  ["rinnovo",/\b(rinnov|prorog|scadut|scadenz)/],
  ["lavoro",/\b(lavorar|puo lavorare|attivita lavorativa|svolgere attivita|assumer|assunzion)/],
- ["durata",/\b(durata|quanto dura|validita|quanti anni|quanti mesi)/],
+ ["durata",/\b(durata|quanto dura|validita|quanti anni|quanti mesi|fino a quando|quando scade)/],
  ["documenti",/\b(document|cosa (deve )?portare|kit|marca da bollo|bollettino|allegat)/],
  ["requisiti",/\b(requisit|condizion|cosa serve|chi puo|diritto|spetta|rilasciare|rilascio|ottenere)/],
  ["diniego",/\b(rifiut|negar|diniego|revoc|ostativ|precedent|condann|reat|espuls)/],
@@ -370,13 +373,16 @@ function capisci(q){
   const n=norm(q);const perm=trovaPermessi(q);const intenti=INTENTI.filter(([k,r])=>r.test(n)).map(([k])=>k);
   let da=null,a=null;
   if(perm.length>=2){
-    const ruolo=x=>{const pr=x.prima.trim().split(" ").pop();if(/^(in|a|ad|verso|al|alla|nel|nella|uno|un)$/.test(pr))return"a";if(/^(da|dal|dalla|dallo)$/.test(pr))return"da";return null};
+    const ruolo=x=>{const pr=x.prima.trim().split(" ").pop();if(/^(in|a|ad|verso|al|alla|nel|nella)$/.test(pr))return"a";if(/^(da|dal|dalla|dallo)$/.test(pr))return"da";return null};
     const r=perm.map(ruolo);
+    const conv=intenti.includes("conversione")||r.includes("da")||r.includes("a");
+    if(!conv)return {perm,intenti,da:null,a:null};
     if(r.includes("a")){a=perm[r.indexOf("a")];da=perm.find((x,i)=>i!==r.indexOf("a"))}
     else if(r.includes("da")){da=perm[r.indexOf("da")];a=perm.find((x,i)=>i!==r.indexOf("da"))}
     else{da=perm[0];a=perm[1]}
     if(!intenti.includes("conversione"))intenti.unshift("conversione");
   }
+  if(perm.length===2&&(perm.some(x=>x.id==="famiglia"))&&intenti.includes("ricongiungimento")&&!/convert|conversion/.test(n))return {perm,intenti,da:null,a:null};
   return {perm,intenti,da:da&&da.id,a:a&&a.id};
 }
 function conversione(da,a){
@@ -405,10 +411,22 @@ function rispondi(q){
       <p class="inbreve">La banca dati non contiene una regola per questa conversione. Non presumere che sia ammessa: verifica le norme indicate nelle due schede e le circolari ministeriali.</p>
       <p style="margin:14px 0 0"><button class="btn sec" onclick="apriScheda('${pda.id}')">Scheda ${esc(pda.breve||pda.nome)}</button></p></div></div>`;
     }
-  }else if(c.perm.length===1){
+  }else if(c.intenti.includes("ricongiungimento")&&c.perm.some(x=>x.id!=="famiglia"&&P[x.id].ricong)){
+    const p=P[c.perm.find(x=>x.id!=="famiglia"&&P[x.id].ricong).id];const rg=p.ricong;const e=ESITI[rg.esito];
+    h+=`<div class="verdetto"><div class="timbro ${e[1]}">${e[0]}<small>Ricongiungimento</small></div><div>
+    <h2>Il titolare di permesso ${esc(p.nome)} può chiedere il ricongiungimento familiare?</h2><p class="inbreve">${esc(rg.testo)}</p>
+    ${rg.condizioni&&rg.condizioni.length?"<h3>Condizioni da verificare</h3><ul>"+rg.condizioni.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":""}
+    ${rg.nota?`<div class="avviso">${esc(rg.nota)}</div>`:""}
+    <div class="norme">${(rg.norme||[]).map(btnNorma).join("")}</div>
+    <p style="margin:14px 0 0"><button class="btn sec" onclick="apriScheda('famiglia')">Requisiti del ricongiungimento</button> <button class="btn sec" onclick="apriScheda('${p.id}')">Scheda ${esc(p.breve||p.nome)}</button></p></div></div>`;
+  }else if(c.perm.length>=1){
     const p=P[c.perm[0].id];h+=rispostaSezione(p,c.intenti);
+    if(c.perm.length>1)h+=`<p class="capito" style="margin-top:12px">Vedi anche: ${c.perm.slice(1).map(x=>`<a href="#" onclick="apriScheda('${x.id}');return false">${esc(P[x.id].nome)}</a>`).join(", ")}</p>`;
   }
-  const rf=cerca(q,d=>d.tipo==="faq",3).filter(r=>r.s>2.5);
+  const GEN=new Set(tok("convertire conversione lavoro lavorare permesso soggiorno rinnovo rinnovare requisiti possibile chiedere diritto quanto dura"));
+  const qSpec=tok(q).filter(w=>!GEN.has(w));
+  const legato=f=>{if(!c.perm.length)return true;const tx=" "+norm(f.q+" "+f.a+" "+(f.tag||[]).join(" "))+" ";return c.perm.some(x=>(P[x.id].alias||[]).some(al=>al.length>4&&!["lavoro","lavoro subordinato","subordinato","famiglia","familiare","familiari","motivi familiari"].includes(norm(al))&&tx.includes(" "+norm(al))))};
+  const rf0=cerca(q,d=>d.tipo==="faq",6).filter(r=>r.s>4&&r.d.t.some(w=>qSpec.includes(w))&&legato(DATA.faq[r.d.i]));const top=rf0.length?rf0[0].s:0;const rf=rf0.filter(r=>r.s>=top*.55).slice(0,(c.da&&c.a)?2:3);
   if(rf.length){h+=`<div class="blocco"><h3>${c.perm.length?"Domande collegate":"Risposte trovate"}</h3>`+rf.map(r=>{const f=DATA.faq[r.d.i];return `<div class="ris-item"><div style="font-weight:600">${esc(f.q)}</div><div>${esc(f.a)}</div><div class="norme">${(f.norme||[]).map(btnNorma).join("")}</div></div>`}).join("")+"</div>"}
   const rn=cerca(q,d=>d.tipo==="art",5);
   if(rn.length){h+=`<div class="blocco"><h3>Articoli pertinenti (sintesi)</h3>`+rn.map(r=>`<div class="ris-item"><div class="tit" onclick="apriNorma('${r.d.lid}','${esc(r.d.num)}')">${esc(r.d.tit)}</div><div>${evidenzia(DATA.norme.find(l=>l.id===r.d.lid).articoli.find(a=>a.n===r.d.num).s,q)}</div></div>`).join("")+"</div>"}
@@ -423,7 +441,7 @@ function rispostaSezione(p,intenti){
   const i=intenti[0]||"requisiti";let titolo,corpo="";
   const lista=a=>"<ul>"+a.map(x=>"<li>"+esc(typeof x==="string"?x:x.t)+(x.rif?` <span class="fonte" style="color:var(--grigio);font-size:12.5px">(${esc(x.rif)})</span>`:"")+"</li>").join("")+"</ul>";
   if(i==="conversione"){titolo="In quali permessi si può convertire";corpo=p.conversioni&&p.conversioni.length?'<ul class="conv-lista">'+p.conversioni.map(cv=>`<li><span class="pill ${ESITI[cv.esito][2]}">${ESITI[cv.esito][0]}</span><span><b>${esc(P[cv.a]?P[cv.a].nome:cv.a)}</b> – ${esc(cv.sintesi)}</span></li>`).join("")+"</ul>":"<p>Nessuna conversione prevista in banca dati.</p>"}
-  else if(i==="rinnovo"){titolo="Rinnovo";corpo="<p>"+esc(p.rinnovo)+"</p>"}
+  else if(i==="rinnovo"){titolo="Rinnovo";corpo="<p>"+esc(p.rinnovo)+"</p><div class=\"avviso\">Regola generale: il rinnovo va chiesto almeno 90 giorni prima della scadenza (art. 5 c.4). Se il permesso è scaduto da più di 60 giorni senza richiesta di rinnovo ricorre l'ipotesi di espulsione (art. 13 c.2 lett. b), ma secondo la giurisprudenza la domanda tardiva va valutata e non respinta automaticamente.</div>"}
   else if(i==="lavoro"){titolo="Si può lavorare?";corpo="<p>"+esc(p.lavoro)+"</p>"}
   else if(i==="durata"){titolo="Durata";corpo="<p>"+esc(p.durata)+"</p>"}
   else if(i==="documenti"){titolo="Documenti";corpo=lista(p.documenti||[])}
@@ -472,6 +490,7 @@ function apriScheda(id){
    ${p.diniego&&p.diniego.length?`<div class="blocco"><h3>Cause specifiche di diniego o revoca</h3>${lista(p.diniego)}<p style="font-size:13px;margin:0">Valgono inoltre le <a href="#" onclick="mostra('generali');return false">cause ostative generali</a>.</p></div>`:""}
   </div><div>
    <div class="blocco"><h3>Rinnovo</h3><p style="margin:0">${esc(p.rinnovo)}</p></div>
+   ${p.ricong?`<div class="blocco"><h3>Può chiedere il ricongiungimento?</h3><p style="margin:0"><span class="pill ${ESITI[p.ricong.esito][2]}">${ESITI[p.ricong.esito][0]}</span> ${esc(p.ricong.testo)}</p>${p.ricong.nota?`<p style="margin:8px 0 0;font-size:14.5px;color:var(--grigio)">${esc(p.ricong.nota)}</p>`:""}</div>`:""}
    <div class="blocco"><h3>Conversioni</h3>${p.conversioni&&p.conversioni.length?'<ul class="conv-lista">'+p.conversioni.map(cv=>`<li><span class="pill ${ESITI[cv.esito][2]}">${ESITI[cv.esito][0]}</span><span><a href="#" onclick="apriConv('${p.id}','${cv.a}');return false"><b>${esc(P[cv.a]?P[cv.a].nome:cv.a)}</b></a><br>${esc(cv.sintesi)}</span></li>`).join("")+"</ul>":"<p style='margin:0'>Non convertibile in altri permessi.</p>"}</div>
    ${p.novita&&p.novita.length?`<div class="blocco"><h3>Novità normative</h3>${lista(p.novita)}</div>`:""}
    ${p.note&&p.note.length?`<div class="blocco"><h3>Attenzione</h3>${lista(p.note)}</div>`:""}
@@ -578,7 +597,7 @@ function disegnaStato(){
   if(!fonti().length){tipo="attenzione";testo=`<b>Aggiornamento automatico non attivo</b><br>Banca dati del ${esc(dataIt(da))}`}
   else if(STATO.tipo==="attesa"){tipo="attesa";testo=`<b>Controllo in corso…</b><br>Banca dati del ${esc(dataIt(da))}`}
   else if(c&&c.esito==="ok"&&giorniDa(c.quando)<1){tipo="ok";testo=`<b>Programma aggiornato</b><br>Banca dati del ${esc(dataIt(da))}<br>Controllato il ${esc(oraIt(c.quando))}`}
-  else{const ok=store.get("ultimoOk",null);const vecchio=giorniDa(ok)>14;tipo=vecchio?"errore":"attenzione";
+  else{const ok=store.get("ultimoOk",null);const vecchio=giorniDa(ok||DATA.dataISO)>14;tipo=vecchio?"errore":"attenzione";
     testo=`<b>Non è stato possibile controllare</b><br>Banca dati del ${esc(dataIt(da))}<br>${ok?"Ultimo controllo riuscito: "+esc(oraIt(ok)):"Nessun controllo riuscito"}${vecchio?"<br>Collegati a internet e riapri il programma.":""}`}
   const s=$("#stato");s.className="stato "+tipo;$("#stato-txt").innerHTML=testo;
   if($("#v-aggiornamenti").classList.contains("attiva"))vistaAggiornamenti();
@@ -594,7 +613,7 @@ async function controlla(manuale){
   STATO.tipo="fatto";
   if(!remoto){store.set("controllo",{quando:new Date().toISOString(),esito:"errore",errore:String(err)});disegnaStato();
     if(manuale)$("#a-msg").textContent="Controllo non riuscito: verifica la connessione a internet.";
-    else if(giorniDa(store.get("ultimoOk",null))>14)banner("errore",`<b>Non è possibile verificare se la banca dati è aggiornata.</b> La versione in uso è del ${esc(dataIt(DATA.dataISO))}. Collegati a internet e riapri il programma prima di decidere su casi dubbi.`);
+    else if(giorniDa(store.get("ultimoOk",null)||DATA.dataISO)>14)banner("errore",`<b>Non è possibile verificare se la banca dati è aggiornata.</b> La versione in uso è del ${esc(dataIt(DATA.dataISO))}. Collegati a internet e riapri il programma prima di decidere su casi dubbi.`);
     return}
   const ora=new Date().toISOString();store.set("controllo",{quando:ora,esito:"ok"});store.set("ultimoOk",ora);
   if(remoto.revisione>DATA.revisione){

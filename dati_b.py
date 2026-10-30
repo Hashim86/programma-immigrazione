@@ -384,6 +384,8 @@ FAQ = [
  dict(q="Chi si sposa in Italia ottiene il permesso per motivi familiari?", a="Sì, se è regolarmente soggiornante da almeno 1 anno e sposa un italiano, un cittadino UE o uno straniero regolarmente soggiornante (art. 30 c.1 lett. b). Il permesso è revocato se al matrimonio non segue l'effettiva convivenza, salvo nascita di figli.", norme=["art. 30 TU 286/1998"], tag=["matrimonio", "famiglia"]),
  dict(q="Il genitore di un minore italiano ha diritto al permesso?", a="Sì, il genitore straniero di minore italiano residente in Italia ottiene il permesso per motivi familiari anche senza titolo di soggiorno valido, purché non privato della responsabilità genitoriale (art. 30 c.1 lett. d).", norme=["art. 30 TU 286/1998"], tag=["genitore", "minore italiano"]),
  dict(q="Si può cambiare datore di lavoro con il permesso per lavoro subordinato?", a="Sì, liberamente con la comunicazione obbligatoria del nuovo datore. Fanno eccezione i lavoratori dell'assistenza familiare ex art. 24-bis e la Carta blu nei primi 12 mesi (autorizzazione dell'Ispettorato).", norme=["art. 22 TU 286/1998", "art. 24-bis TU 286/1998", "art. 27-quater TU 286/1998"], tag=["cambio datore"]),
+ dict(q="Chi può chiedere il ricongiungimento familiare?", a="Il titolare di permesso UE di lungo periodo o di permesso di almeno 1 anno per lavoro subordinato o autonomo, protezione internazionale, studio, motivi religiosi o familiari (art. 28 c.1). Carta blu e ricercatori indipendentemente dalla durata. Esclusi richiedenti asilo, protezione temporanea, stagionali e titoli non elencati (es. protezione speciale, cure mediche). Per coniuge, figli maggiorenni invalidi e genitori servono 2 anni di soggiorno, salvo protezione internazionale.", norme=["art. 28 TU 286/1998", "art. 29 TU 286/1998"], tag=["ricongiungimento", "chi puo"]),
+ dict(q="Dopo quanti anni di residenza si può chiedere la cittadinanza italiana?", a="Competenza della Prefettura, non della Questura. Per residenza legale: 10 anni per gli extra-UE, 4 per i cittadini UE, 5 per apolidi e rifugiati. Per matrimonio con italiano: 2 anni di residenza legale in Italia dopo il matrimonio (3 se residenti all'estero), ridotti della metà con figli. Serve la conoscenza dell'italiano B1. Per i discendenti e i nati in Italia verificare le regole dopo il DL 36/2025.", norme=["L. 91/1992"], tag=["cittadinanza", "naturalizzazione", "anni"]),
  dict(q="Quali permessi sono convertibili in lavoro in base all'art. 6 c.1-bis?", a="Residenza elettiva del pensionato con pensione in Italia, acquisto cittadinanza o apolidia (salvo ex richiedenti asilo), attività sportiva, lavoro artistico, motivi religiosi, assistenza minori. Protezione speciale, calamità e cure mediche non lo sono più dal DL 20/2023, salvo regime transitorio.", norme=["art. 6 c.1-bis TU 286/1998"], tag=["conversione", "elenco"]),
 ]
 
@@ -395,3 +397,30 @@ ESEMPI = [
  "il richiedente asilo dopo quanto può lavorare?",
  "cosa succede se il lavoratore perde il lavoro?",
 ]
+
+# Chi può chiedere il ricongiungimento (art. 28 TU). esito: si / no / cond
+_RC = lambda esito, testo, norme, condizioni=None, nota=None: {k: v for k, v in dict(esito=esito, testo=testo, norme=norme, condizioni=condizioni, nota=nota).items() if v}
+_REQ = ["Permesso di durata non inferiore a 1 anno", "Per coniuge, figli maggiorenni invalidi e genitori: 2 anni di soggiorno legale ininterrotto", "Alloggio idoneo e reddito minimo (art. 29 c.3)"]
+RICONG = {
+ "lav_sub": _RC("si", "Sì, se il permesso ha durata di almeno 1 anno.", ["art. 28 TU 286/1998", "art. 29 TU 286/1998"], _REQ),
+ "lav_aut": _RC("si", "Sì, se il permesso ha durata di almeno 1 anno.", ["art. 28 TU 286/1998", "art. 29 TU 286/1998"], _REQ),
+ "assist_fam": _RC("si", "Sì, come per il lavoro subordinato, se il permesso ha durata di almeno 1 anno.", ["art. 28 TU 286/1998"], _REQ),
+ "lav_stag": _RC("no", "No: il permesso stagionale non raggiunge la durata minima di 1 anno richiesta.", ["art. 28 TU 286/1998"]),
+ "attesa_occ": _RC("cond", "Il permesso per attesa occupazione non è citato espressamente dall'art. 28: verificare la prassi; con un nuovo lavoro si torna al caso del lavoro subordinato.", ["art. 28 TU 286/1998", "art. 22 c.11 TU 286/1998"], None, "Da verificare con le circolari."),
+ "studio": _RC("si", "Sì, se il permesso per studio ha durata di almeno 1 anno.", ["art. 28 TU 286/1998"], _REQ),
+ "religiosi": _RC("si", "Sì, se il permesso ha durata di almeno 1 anno.", ["art. 28 TU 286/1998"], _REQ),
+ "famiglia": _RC("si", "Sì, il titolare di permesso per motivi familiari di almeno 1 anno.", ["art. 28 TU 286/1998"], _REQ),
+ "lungo_periodo": _RC("si", "Sì.", ["art. 28 TU 286/1998", "art. 29 TU 286/1998"], ["Per coniuge, figli maggiorenni invalidi e genitori: 2 anni di soggiorno legale ininterrotto", "Alloggio idoneo e reddito minimo (art. 29 c.3)"]),
+ "carta_blu": _RC("si", "Sì, indipendentemente dalla durata del permesso.", ["art. 27-quater TU 286/1998"], ["Alloggio e reddito (art. 29 c.3)"], "Applicabilità del requisito dei 2 anni (art. 28 c.1-bis): da verificare."),
+ "ricercatore": _RC("si", "Sì, indipendentemente dalla durata del permesso; esonero dal requisito di alloggio.", ["art. 27-ter TU 286/1998"]),
+ "ict": _RC("si", "Sì, con permesso per i familiari di pari durata.", ["art. 27-quinquies TU 286/1998"]),
+ "nomadi": _RC("si", "Sì, ai sensi dell'art. 29.", ["art. 27 TU 286/1998"]),
+ "investitori": _RC("si", "Sì, i familiari possono entrare ai sensi dell'art. 29.", ["art. 26-bis TU 286/1998"]),
+ "rifugiato": _RC("si", "Sì, senza i requisiti di alloggio e reddito e senza il requisito dei 2 anni di soggiorno.", ["art. 29-bis TU 286/1998", "art. 28 TU 286/1998"]),
+ "sussidiaria": _RC("si", "Sì, e il requisito dei 2 anni non si applica ai titolari di protezione internazionale.", ["art. 28 TU 286/1998", "art. 29-bis TU 286/1998"], None, "L'esonero da alloggio e reddito previsto per i rifugiati (art. 29-bis): estensione alla sussidiaria da verificare."),
+ "rich_asilo": _RC("no", "No: i richiedenti protezione internazionale in attesa di decisione sono esclusi.", ["art. 29 TU 286/1998"]),
+ "prot_temp": _RC("no", "No: i beneficiari di protezione temporanea sono esclusi.", ["art. 29 TU 286/1998"]),
+ "prot_speciale": _RC("no", "No: la protezione speciale non è tra i titoli che consentono il ricongiungimento (art. 28 c.1).", ["art. 28 TU 286/1998"], None, "Verificare eventuali indirizzi giurisprudenziali."),
+ "cure_mediche": _RC("no", "No: non è tra i titoli che consentono il ricongiungimento.", ["art. 28 TU 286/1998"]),
+ "turismo": _RC("no", "No.", ["art. 28 TU 286/1998"]),
+}

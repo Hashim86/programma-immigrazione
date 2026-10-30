@@ -4,9 +4,10 @@ OWN,REPO=CFG.get("owner",""),CFG.get("repo","programma-immigrazione")
 BASE=f"https://raw.githubusercontent.com/{OWN}/{REPO}/main/" if OWN else ""
 STORICO=json.load(open("storico.json",encoding="utf-8"))
 from dati_a import PERMESSI_A
-from dati_b import PERMESSI_B, NORME, GENERALI, FAQ, ESEMPI
+from dati_b import PERMESSI_B, NORME, GENERALI, FAQ, ESEMPI, RICONG
 for p in PERMESSI_A+PERMESSI_B:
     p.setdefault("conversioni", [])
+    if p["id"] in RICONG: p["ricong"]=RICONG[p["id"]]
 data = dict(
  revisione=STORICO[-1]["revisione"], dataISO=STORICO[-1]["data"], aggiornamento=STORICO[-1]["data"], appMinima=2, storico=STORICO,
  aggiornamenti=dict(url=[BASE+"dist/banca-dati.json", f"https://cdn.jsdelivr.net/gh/{OWN}/{REPO}@main/dist/banca-dati.json"] if OWN else [], programma=BASE+"dist/Programma%20Immigrazione.html" if OWN else ""),

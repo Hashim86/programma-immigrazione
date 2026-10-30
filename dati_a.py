@@ -7,7 +7,6 @@ DOC_BASE = ["Passaporto o documento equipollente in corso di validità", "Kit po
 PERMESSI_A = [
  dict(id="lav_sub", nome="Lavoro subordinato", breve="Lav. subordinato", categoria="Lavoro",
   alias=["lavoro subordinato", "lavoro dipendente", "subordinato", "lavoro", "permesso unico lavoro", "permesso unico", "perm unico lavoro", "lavoratore dipendente", "contratto di lavoro"],
-  aliasDeboli=["lavoro"],
   sintesi="Permesso unico per lavoro subordinato rilasciato dopo ingresso con nulla osta e visto, o per conversione di altro titolo. Dal 22/5/2026 si applica la disciplina del D.Lgs. 83/2026 (dir. UE 2024/1233).",
   norme=["art. 5 TU 286/1998", "art. 5-bis TU 286/1998", "art. 22 TU 286/1998", "art. 4-bis TU 286/1998", "art. 13 DPR 394/1999", "art. 14 DPR 394/1999", "D.Lgs. 83/2026"],
   competenza="Questore (nulla osta: Sportello Unico per l'Immigrazione)",
@@ -212,8 +211,8 @@ PERMESSI_A = [
   conversioni=[C("lungo_periodo", "cond", "Dopo 5 anni con i requisiti dell'art. 9.", ["art. 9 TU 286/1998"])]),
 
  dict(id="famiglia", nome="Motivi familiari (ricongiungimento e coesione)", breve="Famiglia", categoria="Famiglia",
-  alias=["motivi familiari", "motivi di famiglia", "famiglia", "familiare", "familiari", "ricongiungimento familiare", "ricongiungimento", "coesione familiare", "coesione", "ricongiunto", "coniuge", "genitore di minore italiano"],
-  aliasDeboli=["familiare", "familiari"],
+  alias=["motivi familiari", "motivi di famiglia", "famiglia", "familiare", "familiari", "ricongiungimento familiare", "ricongiungimento", "coesione familiare", "coesione", "ricongiunto", "ricongiunta", "ricongiunti", "coniuge", "moglie", "marito", "genitore di minore italiano", "genitore di un minore italiano", "genitore di un bambino italiano", "figlio italiano minorenne", "bambino italiano"],
+  aliasDeboli=["familiare", "familiari", "coniuge", "moglie", "marito"],
   sintesi="Permesso per motivi familiari rilasciato al familiare entrato per ricongiungimento o al seguito, a chi si sposa in Italia dopo un anno di soggiorno, per coesione familiare e al genitore di minore italiano.",
   norme=["art. 28 TU 286/1998", "art. 29 TU 286/1998", "art. 29-bis TU 286/1998", "art. 30 TU 286/1998", "art. 5 c.5 TU 286/1998"],
   competenza="Questore (nulla osta al ricongiungimento: SUI entro 150 giorni)",
@@ -258,7 +257,7 @@ PERMESSI_A = [
   conversioni=[C("lav_sub", "cond", "Contrasto tra norme: l'art. 29 c.6 lo dichiara non convertibile, l'art. 6 c.1-bis lett. h (introdotto dal DL 130/2020, successivo) lo include tra i convertibili ove ne ricorrano i requisiti.", ["art. 6 c.1-bis lett. h TU 286/1998", "art. 29 c.6 TU 286/1998"], ["Requisiti del lavoro subordinato"], "Prevale di norma la disposizione successiva: verificare l'indirizzo ministeriale prima di decidere.")]),
 
  dict(id="fam_ue", nome="Carta di soggiorno per familiare di cittadino UE", breve="Familiare UE", categoria="Famiglia",
-  alias=["familiare di cittadino ue", "familiare di cittadino comunitario", "carta di soggiorno", "familiare comunitario", "coniuge di cittadino ue", "coniuge comunitario", "30/2007", "italiano mobile"],
+  alias=["familiare di cittadino ue", "familiare di cittadino comunitario", "carta di soggiorno", "familiare comunitario", "coniuge di cittadino ue", "coniuge comunitario", "30/2007", "italiano mobile", "familiare di comunitario", "familiare di un comunitario", "comunitario", "comunitaria", "cittadino comunitario", "cittadina comunitaria", "cittadino ue", "cittadina ue", "cittadino europeo", "cittadina europea", "rumeno", "rumena", "polacco", "polacca", "bulgaro", "bulgara"],
   sintesi="Carta di soggiorno per il familiare extra-UE di un cittadino dell'Unione (o di un italiano che ha esercitato la libera circolazione e rientra).",
   norme=["art. 2 D.Lgs. 30/2007", "art. 10 D.Lgs. 30/2007", "art. 17 D.Lgs. 30/2007", "art. 12 D.Lgs. 30/2007", "art. 20 D.Lgs. 30/2007"],
   requisiti=[R("Vincolo familiare: coniuge, partner di unione registrata, discendenti under 21 o a carico, ascendenti a carico", "art. 2 D.Lgs. 30/2007"),
