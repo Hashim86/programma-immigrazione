@@ -375,7 +375,7 @@ function capisci(q){
   if(perm.length>=2){
     const ruolo=x=>{const pr=x.prima.trim().split(" ").pop();if(/^(in|a|ad|verso|al|alla|nel|nella)$/.test(pr))return"a";if(/^(da|dal|dalla|dallo)$/.test(pr))return"da";return null};
     const r=perm.map(ruolo);
-    const conv=intenti.includes("conversione")||r.includes("da")||r.includes("a");
+    const conv=intenti.includes("conversione")||r.includes("da")||r.includes("a")||/\b(chiedere|ottenere|avere|richiedere|passare al|prendere) (il |un |la |)(permesso|carta)/.test(n);
     if(!conv)return {perm,intenti,da:null,a:null};
     if(r.includes("a")){a=perm[r.indexOf("a")];da=perm.find((x,i)=>i!==r.indexOf("a"))}
     else if(r.includes("da")){da=perm[r.indexOf("da")];a=perm.find((x,i)=>i!==r.indexOf("da"))}
