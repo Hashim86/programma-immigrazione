@@ -5,6 +5,13 @@ BASE=f"https://raw.githubusercontent.com/{OWN}/{REPO}/main/" if OWN else ""
 STORICO=json.load(open("storico.json",encoding="utf-8"))
 from dati_a import PERMESSI_A
 from dati_b import PERMESSI_B, NORME, GENERALI, FAQ, ESEMPI, RICONG
+try:
+    from dati_c import PERMESSI_C, RICONG_C, FAQ_C
+except ImportError:
+    PERMESSI_C, RICONG_C, FAQ_C = [], {}, []
+PERMESSI_B = PERMESSI_B + PERMESSI_C
+RICONG = {**RICONG, **RICONG_C}
+FAQ = FAQ + FAQ_C
 for p in PERMESSI_A+PERMESSI_B:
     p.setdefault("conversioni", [])
     if p["id"] in RICONG: p["ricong"]=RICONG[p["id"]]
