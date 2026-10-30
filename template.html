@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programma Immigrazione</title>
+<style>
+:root{
+  --carta:#F1F3F2; --foglio:#FFFFFF; --inchiostro:#14202A; --grigio:#46525C; --linea:#CDD5D3;
+  --petrolio:#0E5A66; --petrolio-chiaro:#E1EEEF;
+  --si:#1F7A47; --si-bg:#E3F2E8; --no:#B0261C; --no-bg:#FBE6E3; --cond:#9A5B00; --cond-bg:#FDF0DA; --ver:#4B4F8F; --ver-bg:#E8E9F6;
+  --titoli:"Bahnschrift","DIN Alternate","Segoe UI Semibold","Segoe UI",system-ui,sans-serif;
+  --testo:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--carta);color:var(--inchiostro);font:16.5px/1.62 var(--testo)}
+body.dim-1 .app{zoom:1.12}body.dim-2 .app{zoom:1.25}
+a{color:var(--petrolio)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #F2B705;outline-offset:2px}
+
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+nav.rail{background:var(--inchiostro);color:#DCE4E6;padding:22px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.marchio{font-family:var(--titoli);font-size:19px;line-height:1.15;color:#fff;padding:0 10px 18px;border-bottom:1px solid #2E3B45;margin-bottom:12px}
+.marchio small{display:block;font-family:var(--testo);font-size:12px;color:#93A3AA;margin-top:6px;font-weight:400}
+.rail button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:6px;font-size:15.5px}
+.rail button:hover{background:#22303A}
+.rail button[aria-current="page"]{background:var(--petrolio);color:#fff}
+.rail button:focus-visible{outline:3px solid #F2B705}
+.rail .sp{flex:1}
+nav.rail .stato{all:unset;cursor:pointer;display:flex;gap:9px;align-items:flex-start;border-radius:8px;padding:12px 14px;font-size:13.5px;line-height:1.45;background:#212E38;color:#C9D3D7}
+nav.rail .stato:hover{background:#2A3843}
+.stato .pal{flex:none;width:11px;height:11px;border-radius:50%;margin-top:4px}
+.stato b{color:#fff;font-weight:600}
+.stato.ok .pal{background:#4CC38A}.stato.attenzione .pal{background:#F2B705}.stato.errore .pal{background:#F2685C}.stato.attesa .pal{background:#93A3AA}
+.dimensione{display:flex;gap:4px;align-items:center;padding:8px 2px 0;font-size:13px;color:#93A3AA}
+.dimensione button{all:unset;cursor:pointer;border:1px solid #3A4954;border-radius:5px;padding:2px 9px;color:#DCE4E6;font-family:var(--titoli)}
+.dimensione button[aria-pressed="true"]{background:#DCE4E6;color:var(--inchiostro)}
+.banner{display:flex;gap:14px;align-items:flex-start;border-radius:10px;padding:14px 18px;margin:0 0 22px;font-size:15.5px;border:1px solid}
+.banner.ok{background:var(--si-bg);border-color:#B5DCC4}.banner.attenzione{background:var(--cond-bg);border-color:#EBCB91}.banner.errore{background:var(--no-bg);border-color:#EDB7B1}
+.banner .chiudi{all:unset;cursor:pointer;margin-left:auto;font-size:20px;line-height:1;padding:0 4px;color:var(--grigio)}
+.banner ul{margin:6px 0 0;padding-left:20px}
+.inbreve{font-size:18.5px;line-height:1.55;margin:0 0 4px;font-weight:600;max-width:68ch}
+
+main{padding:34px 44px 70px;max-width:1140px;width:100%}
+h1{font-family:var(--titoli);font-weight:600;font-size:32px;line-height:1.15;margin:0 0 6px;letter-spacing:-.2px}
+h2{font-family:var(--titoli);font-weight:600;font-size:23px;margin:28px 0 10px}
+h3{font-family:var(--titoli);font-weight:600;font-size:18px;margin:20px 0 8px}
+.sotto{color:var(--grigio);margin:0 0 22px;max-width:70ch}
+.vista{display:none}.vista.attiva{display:block}
+
+/* --- Chiedi --- */
+.domanda{display:flex;gap:10px;background:var(--foglio);border:2px solid var(--inchiostro);border-radius:10px;padding:8px}
+.domanda textarea{flex:1;border:0;resize:none;min-height:60px;padding:8px 10px;font-size:19px;outline:none;background:transparent}
+.btn{background:var(--petrolio);color:#fff;border:0;border-radius:7px;padding:11px 20px;cursor:pointer;font-weight:600}
+.btn:hover{filter:brightness(1.1)}
+.btn.sec{background:transparent;color:var(--petrolio);border:1.5px solid var(--petrolio)}
+.esempi{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.esempi button{background:var(--foglio);border:1px solid var(--linea);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:14.5px;color:var(--grigio)}
+.esempi button:hover{border-color:var(--petrolio);color:var(--petrolio)}
+.risposta{margin-top:26px}
+.capito{font-size:14.5px;color:var(--grigio);margin-bottom:12px}
+.capito b{color:var(--inchiostro)}
+.verdetto{background:var(--foglio);border:1px solid var(--linea);border-radius:12px;padding:26px 28px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
+.timbro{font-family:var(--titoli);font-weight:700;font-size:26px;letter-spacing:1px;padding:10px 16px;border:4px double currentColor;border-radius:8px;transform:rotate(-4deg);white-space:nowrap;text-align:center;min-width:132px;line-height:1.05}
+.timbro small{display:block;font-size:11px;letter-spacing:.5px;font-weight:600;margin-top:3px}
+.t-si{color:var(--si)}.t-no{color:var(--no)}.t-cond{color:var(--cond)}.t-ver{color:var(--ver)}
+.verdetto h2{margin:0 0 10px;font-size:17px;color:var(--grigio);font-weight:500}
+.verdetto ul{margin:6px 0 0;padding-left:20px}
+.verdetto li{margin:6px 0}
+.norme{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.norma{font-size:13.5px;background:var(--petrolio-chiaro);color:var(--petrolio);border-radius:5px;padding:3px 8px;cursor:pointer;border:0}
+.norma:hover{text-decoration:underline}
+.avviso{border-left:4px solid var(--cond);background:var(--cond-bg);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15.5px;margin:14px 0}
+.avviso.rosso{border-color:var(--no);background:var(--no-bg)}
+.blocco{background:var(--foglio);border:1px solid var(--linea);border-radius:12px;padding:20px 24px;margin-top:16px}
+.blocco h3{margin-top:0}
+.ris-item{padding:14px 0;border-top:1px solid var(--linea)}
+.ris-item:first-of-type{border-top:0}
+.ris-item .tit{font-weight:600;cursor:pointer;color:var(--petrolio)}
+.ris-item .tit:hover{text-decoration:underline}
+.ris-item .fonte{font-size:14px;color:var(--grigio)}
+mark{background:#FFE89A;padding:0 1px}
+
+/* --- Permessi --- */
+.filtri{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.filtri input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio)}
+.filtri select{padding:10px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio)}
+.gruppo-tit{font-family:var(--titoli);font-size:14px;color:var(--grigio);margin:22px 0 8px;border-bottom:1px solid var(--linea);padding-bottom:4px}
+.elenco{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.voce{all:unset;cursor:pointer;background:var(--foglio);border:1px solid var(--linea);border-left:5px solid var(--petrolio);border-radius:6px;padding:12px 14px;display:block}
+.voce:hover{border-color:var(--petrolio)}
+.voce b{display:block;font-family:var(--titoli);font-weight:600;font-size:16.5px}
+.voce span{font-size:14px;color:var(--grigio)}
+.voce:focus-visible{outline:3px solid #F2B705}
+
+.scheda-testa{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.indietro{all:unset;cursor:pointer;color:var(--petrolio);font-size:14px;margin-bottom:10px;display:inline-block}
+.fatti{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:10px;overflow:hidden;margin:18px 0}
+.fatto{background:var(--foglio);padding:12px 16px}
+.fatto .et{font-size:13.5px;color:var(--grigio)}
+.fatto .va{font-weight:600;margin-top:2px}
+.colonne{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+.req{list-style:none;padding:0;margin:0}
+.req li{display:flex;gap:12px;padding:11px 0;border-top:1px dashed var(--linea);align-items:flex-start}
+.req li:first-child{border-top:0}
+.req input{width:20px;height:20px;margin-top:3px;accent-color:var(--si);flex:none}
+.req label{cursor:pointer}
+.req .rif{font-size:13px;color:var(--grigio);display:block}
+.esito-req{margin-top:10px;font-weight:600;font-size:14px}
+.conv-lista{list-style:none;padding:0;margin:0}
+.conv-lista li{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--linea);font-size:15.5px}
+.conv-lista li:first-child{border-top:0}
+.pill{font-family:var(--titoli);font-size:13px;font-weight:700;border-radius:4px;padding:2px 7px;text-align:center;align-self:start;letter-spacing:.3px}
+.p-si{background:var(--si-bg);color:var(--si)}.p-no{background:var(--no-bg);color:var(--no)}.p-cond{background:var(--cond-bg);color:var(--cond)}.p-ver{background:var(--ver-bg);color:var(--ver)}
+.flusso{display:flex;flex-wrap:wrap;gap:0;margin:8px 0;counter-reset:passo}
+.flusso div{flex:1;min-width:150px;background:var(--petrolio-chiaro);padding:11px 14px 11px 24px;font-size:14.5px;position:relative;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%,12px 50%)}
+.flusso div:first-child{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);padding-left:12px}
+.flusso div:nth-child(even){background:#CFE3E5}
+
+/* --- Conversioni --- */
+.sel-conv{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:18px}
+.sel-conv label{display:flex;flex-direction:column;font-size:13px;color:var(--grigio);gap:4px}
+.sel-conv select{padding:10px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio);min-width:260px;color:var(--inchiostro);font-size:15px}
+.matrice-wrap{overflow:auto;border:1px solid var(--linea);border-radius:10px;background:var(--foglio);max-height:70vh}
+table.matrice{border-collapse:collapse;font-size:12.5px;width:100%}
+.matrice th,.matrice td{border:1px solid var(--linea);padding:0}
+.matrice thead th{position:sticky;top:0;background:var(--foglio);z-index:2;vertical-align:bottom;min-width:96px}
+.matrice thead th div{padding:8px 6px;font-weight:600;font-size:12.5px;line-height:1.25}
+.matrice tbody th{position:sticky;left:0;background:var(--foglio);text-align:left;padding:4px 8px;white-space:nowrap;font-weight:600;z-index:1}
+.matrice td button{all:unset;cursor:pointer;display:block;width:100%;height:28px;text-align:center;font-weight:700;font-family:var(--titoli)}
+.matrice td.c-si{background:var(--si-bg);color:var(--si)}.matrice td.c-no{background:var(--no-bg);color:var(--no)}
+.matrice td.c-cond{background:var(--cond-bg);color:var(--cond)}.matrice td.c-ver{background:var(--ver-bg);color:var(--ver)}
+.matrice td.c-x{background:#EEF1F0}
+.legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:10px 0}
+
+/* --- Normativa --- */
+.legge{background:var(--foglio);border:1px solid var(--linea);border-radius:10px;margin-bottom:10px}
+.legge summary{cursor:pointer;padding:14px 18px;font-weight:600;font-family:var(--titoli);font-size:16px;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.legge summary::-webkit-details-marker{display:none}
+.legge summary span{font-family:var(--testo);font-weight:400;font-size:13px;color:var(--grigio)}
+.art{padding:10px 18px;border-top:1px solid var(--linea)}
+.art b{font-family:var(--titoli)}
+.art .s{font-size:15.5px;margin-top:3px}
+.art.lampeggia{animation:lampo 1.6s ease}
+@keyframes lampo{0%,40%{background:#FFF4C2}100%{background:transparent}}
+textarea.incolla{width:100%;min-height:180px;padding:10px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio);font-size:13px}
+.riga{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.riga input[type=text]{flex:1;min-width:220px;padding:10px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio)}
+
+/* --- Calcolo --- */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.calc label{display:block;margin:10px 0 4px;font-size:14px}
+.calc input,.calc select{width:100%;padding:10px;border:1px solid var(--linea);border-radius:8px;background:var(--foglio)}
+.cifra{font-family:var(--titoli);font-size:34px;font-weight:700}
+.cifra small{font-size:14px;color:var(--grigio);font-weight:400}
+
+.piede{margin-top:40px;font-size:13.5px;color:var(--grigio);max-width:80ch}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  nav.rail{position:static;height:auto;flex-direction:row;flex-wrap:wrap}
+  .marchio{width:100%}
+  .rail .sp,.rail .agg{display:none}
+  main{padding:20px 16px}
+  .colonne,.calc{grid-template-columns:1fr}
+  .verdetto{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media print{
+  nav.rail,.indietro,.no-stampa,.domanda,.esempi{display:none!important}
+  .app{display:block}main{padding:0;max-width:none}
+  body{background:#fff}.blocco,.fatti,.verdetto{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="rail" aria-label="Sezioni">
+  <div class="marchio">Programma Immigrazione<small>Consultazione permessi di soggiorno</small></div>
+  <button data-v="chiedi" aria-current="page">Fai una domanda</button>
+  <button data-v="permessi">Tipi di permesso</button>
+  <button data-v="conversioni">Conversioni</button>
+  <button data-v="generali">Requisiti generali e ostativi</button>
+  <button data-v="normativa">Normativa</button>
+  <button data-v="reddito">Calcolo reddito minimo</button>
+  <button data-v="testi">Testi ufficiali</button>
+  <button data-v="aggiornamenti">Aggiornamenti</button>
+  <div class="sp"></div>
+  <button class="stato attesa" id="stato" onclick="mostra('aggiornamenti')"><span class="pal"></span><span id="stato-txt">Controllo aggiornamenti…</span></button>
+  <div class="dimensione" role="group" aria-label="Dimensione del testo">Testo <button data-dim="0" aria-label="Normale">A</button><button data-dim="1" aria-label="Grande" style="font-size:15px">A</button><button data-dim="2" aria-label="Molto grande" style="font-size:18px">A</button></div>
+</nav>
+<main>
+
+<div id="banner"></div>
+<section class="vista attiva" id="v-chiedi">
+  <h1>Fai una domanda</h1>
+  <p class="sotto">Scrivi la domanda come la diresti a un collega. Ogni risposta indica le norme da cui deriva: aprile prima di decidere.</p>
+  <div class="domanda">
+    <textarea id="q" rows="2" placeholder="Es. posso convertire un permesso per motivi familiari in lavoro subordinato?" aria-label="Domanda"></textarea>
+    <button class="btn" id="vai">Cerca</button>
+  </div>
+  <div class="esempi" id="esempi"></div>
+  <div class="risposta" id="risposta"></div>
+</section>
+
+<section class="vista" id="v-permessi"></section>
+
+<section class="vista" id="v-conversioni">
+  <h1>Conversioni</h1>
+  <p class="sotto">Scegli il permesso di partenza e quello richiesto, oppure clicca una casella della tabella.</p>
+  <div class="sel-conv">
+    <label>Permesso posseduto<select id="c-da"></select></label>
+    <label>Permesso richiesto<select id="c-a"></select></label>
+  </div>
+  <div id="c-esito"></div>
+  <h2>Tabella verso i permessi più richiesti</h2>
+  <div class="legenda"><span class="pill p-si">SÌ</span> convertibile <span class="pill p-cond">COND.</span> solo a certe condizioni <span class="pill p-no">NO</span> non convertibile <span class="pill p-ver">?</span> non presente in banca dati: verificare</div>
+  <div class="matrice-wrap"><table class="matrice" id="matrice"></table></div>
+</section>
+
+<section class="vista" id="v-generali"></section>
+
+<section class="vista" id="v-normativa">
+  <h1>Normativa</h1>
+  <p class="sotto">Sintesi degli articoli usati nelle schede. Le sintesi non sostituiscono il testo vigente: per il testo integrale usa la sezione Testi ufficiali.</p>
+  <div class="filtri"><input id="n-cerca" type="search" placeholder="Cerca articolo o parola (es. 30, coesione, reddito)"></div>
+  <div id="n-elenco"></div>
+</section>
+
+<section class="vista" id="v-reddito">
+  <h1>Calcolo reddito minimo</h1>
+  <p class="sotto">Soglia di reddito annuo richiesta (art. 29 c.3 lett. b e art. 9 c.1 TU 286/1998), calcolata sull'assegno sociale dell'anno indicato.</p>
+  <div class="calc">
+    <div class="blocco">
+      <label for="r-tipo">Per quale istanza</label>
+      <select id="r-tipo">
+        <option value="ric">Ricongiungimento / coesione familiare</option>
+        <option value="ue">Permesso UE soggiornanti di lungo periodo</option>
+        <option value="base">Rinnovo lavoro / reddito minimo del solo richiedente</option>
+      </select>
+      <label for="r-fam">Familiari (oltre al richiedente) da ricongiungere o già conviventi da includere</label>
+      <input id="r-fam" type="number" min="0" max="20" value="1">
+      <label for="r-min14">Di cui figli minori di 14 anni</label>
+      <input id="r-min14" type="number" min="0" max="20" value="0">
+      <label for="r-as">Assegno sociale annuo (€)</label>
+      <input id="r-as" type="number" step="0.01">
+      <label for="r-dich">Reddito dichiarato dal nucleo (€, facoltativo)</label>
+      <input id="r-dich" type="number" step="0.01" placeholder="es. 15000">
+    </div>
+    <div class="blocco" id="r-esito"></div>
+  </div>
+</section>
+
+<section class="vista" id="v-testi">
+  <h1>Testi ufficiali</h1>
+  <p class="sotto">Carica qui i testi vigenti delle leggi: verranno salvati su questo computer e usati nelle ricerche, senza bisogno di internet.</p>
+  <div class="blocco">
+    <h3>Come aggiungere un testo</h3>
+    <div class="flusso"><div>Apri la legge su normattiva.it (versione vigente, "Atto completo")</div><div>Premi Ctrl+A e poi Ctrl+C</div><div>Incolla qui sotto con Ctrl+V</div><div>Scrivi il nome e premi Salva</div></div>
+    <div class="riga"><input type="text" id="t-nome" placeholder="Nome (es. D.Lgs. 286/1998 - Testo unico immigrazione)"></div>
+    <textarea class="incolla" id="t-testo" placeholder="Incolla qui il testo completo della legge"></textarea>
+    <div class="riga"><button class="btn" id="t-salva">Salva testo</button><span id="t-msg" class="fonte"></span></div>
+  </div>
+  <div class="blocco"><h3>Testi salvati su questo computer</h3><div id="t-elenco"></div></div>
+  <div class="blocco"><h3>Collegamenti alle versioni vigenti (servono internet)</h3><div id="t-link"></div></div>
+</section>
+
+<section class="vista" id="v-aggiornamenti">
+  <h1>Aggiornamenti</h1>
+  <p class="sotto">Ogni volta che apri il programma con internet, la banca dati viene controllata e, se c'è una versione nuova, scaricata e applicata da sola.</p>
+  <div class="fatti" id="a-fatti"></div>
+  <p><button class="btn" id="a-ora">Controlla adesso</button> <span id="a-msg" style="margin-left:10px;color:var(--grigio)"></span></p>
+  <div id="a-app"></div>
+  <h2>Cosa è cambiato</h2>
+  <div id="a-storico"></div>
+</section>
+<p class="piede" id="piede"></p>
+</main>
+</div>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const APP_VERSIONE=2;
+let DATA=DATA_INTEGRATA;
+let P={};
+const ESITI={si:["SÌ","t-si","p-si","c-si","Convertibile"],no:["NO","t-no","p-no","c-no","Non convertibile"],cond:["A CONDIZIONI","t-cond","p-cond","c-cond","Solo a condizioni"],ver:["VERIFICARE","t-ver","p-ver","c-ver","Non in banca dati"]};
+
+/* ---------- archivio locale ---------- */
+const store={get(k,d){try{const v=localStorage.getItem("pi_"+k);return v?JSON.parse(v):d}catch(e){return d}},
+ set(k,v){try{localStorage.setItem("pi_"+k,JSON.stringify(v));return true}catch(e){return false}}};
+
+/* ---------- testo: normalizzazione e ricerca ---------- */
+const STOP=new Set("il lo la i gli le un uno una di a da in con su per tra fra e o ed od ma se che chi cui non si mi ti ci vi ne del dello della dei degli delle al allo alla ai agli alle dal dallo dalla dai dagli dalle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle col coi come quale quali quando dove anche piu più puo può posso possono deve devono essere e' è sono ha hanno ho suo sua suoi sue questo questa quello quella cosa ad permesso permessi soggiorno titolo".split(" "));
+const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[’']/g," ");
+function radice(w){if(/^\d/.test(w))return w;if(w.length>5)w=w.replace(/(azioni|azione|amento|amenti|mente|zioni|zione|ità|ita|ari|ario|aria|ali|ale|ivo|iva|ivi|ive|ato|ata|ati|ate|ito|ita|iti|ite)$/,"");if(w.length>4)w=w.replace(/[aeiou]$/,"");return w}
+const tok=s=>norm(s).split(/[^a-z0-9-]+/).filter(w=>w&&!STOP.has(w)&&(w.length>1||/\d/.test(w))).map(radice);
+
+let INDICE=null;
+function costruisciIndice(){
+  const docs=[];
+  DATA.faq.forEach((f,i)=>docs.push({tipo:"faq",i,tit:f.q,testo:f.q+" "+f.q+" "+f.a+" "+(f.tag||[]).join(" "),fonte:"Domande frequenti"}));
+  DATA.permessi.forEach(p=>{
+    docs.push({tipo:"perm",id:p.id,tit:p.nome,testo:[p.nome,p.nome,p.sintesi,(p.alias||[]).join(" "),p.requisiti.map(r=>r.t).join(" ")].join(" "),fonte:"Scheda permesso"});
+  });
+  DATA.norme.forEach(l=>l.articoli.forEach(a=>docs.push({tipo:"art",lid:l.id,num:a.n,tit:l.sigla+" art. "+a.n+(a.r?" – "+a.r:""),testo:[l.sigla,"art "+a.n,a.r,a.s].join(" "),fonte:l.titolo})));
+  (store.get("testi",[])).forEach((t,ti)=>dividiArticoli(t.testo).forEach((a,ai)=>docs.push({tipo:"uff",ti,ai,tit:t.nome+" – "+a.tit,testo:a.tit+" "+a.corpo,corpo:a.corpo,fonte:"Testo ufficiale caricato"})));
+  const df={};let lunTot=0;
+  docs.forEach(d=>{d.t=tok(d.testo);d.len=d.t.length;lunTot+=d.len;d.tf={};d.t.forEach(w=>d.tf[w]=(d.tf[w]||0)+1);Object.keys(d.tf).forEach(w=>df[w]=(df[w]||0)+1)});
+  INDICE={docs,df,N:docs.length,avg:lunTot/Math.max(1,docs.length)};
+}
+function cerca(q,filtro,max=6){
+  if(!INDICE)costruisciIndice();
+  const qt=[...new Set(tok(q))];const {docs,df,N,avg}=INDICE;const k1=1.3,b=.75;
+  const ris=[];
+  for(const d of docs){if(filtro&&!filtro(d))continue;let s=0,hit=0;
+    for(const w of qt){const f=d.tf[w];if(!f)continue;hit++;const idf=Math.log(1+(N-df[w]+.5)/(df[w]+.5));s+=idf*f*(k1+1)/(f+k1*(1-b+b*d.len/avg))}
+    if(s>0){s*=(.5+hit/qt.length);ris.push({d,s})}}
+  return ris.sort((a,b)=>b.s-a.s).slice(0,max);
+}
+function evidenzia(testo,q,lung=260){
+  const parole=[...new Set(norm(q).split(/[^a-z0-9]+/).filter(w=>w.length>3&&!STOP.has(w)))];
+  const t=String(testo);const nt=norm(t);let pos=-1;
+  for(const w of parole){const p=nt.indexOf(w.slice(0,Math.max(4,w.length-2)));if(p>=0&&(pos<0||p<pos))pos=p}
+  const ini=Math.max(0,pos-80);let frag=t.slice(ini,ini+lung);frag=(ini>0?"… ":"")+esc(frag)+(ini+lung<t.length?" …":"");
+  parole.forEach(w=>{const r=w.slice(0,Math.max(4,w.length-2)).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");frag=frag.replace(new RegExp("(\\b"+r+"[a-zàèéìòù]*)","gi"),"<mark>$1</mark>")});
+  return frag;
+}
+function dividiArticoli(testo){
+  const righe=String(testo).split(/\r?\n/);const out=[];let cur={tit:"Premessa",corpo:""};
+  const re=/^\s*(Art\.|Articolo)\s*(\d+[\s-]*(bis|ter|quater|quinquies|sexies|septies|octies|novies|decies)?(\.\d+)?)\b(.*)$/i;
+  for(const r of righe){const m=r.match(re);if(m&&r.trim().length<160){if(cur.corpo.trim())out.push(cur);cur={tit:"Art. "+m[2].replace(/\s+/g,"-").replace(/-+/g,"-")+(m[5]?" "+m[5].trim():""),corpo:""}}else cur.corpo+=r+"\n"}
+  if(cur.corpo.trim())out.push(cur);return out;
+}
+
+/* ---------- riconoscimento della domanda ---------- */
+let ALIAS=[];
+function attiva(d){
+  DATA=d;P=Object.fromEntries(DATA.permessi.map(p=>[p.id,p]));INDICE=null;
+  const ras=document.getElementById("r-as");if(ras)ras.value="";
+  ALIAS=[];DATA.permessi.forEach(p=>(p.alias||[]).forEach(a=>ALIAS.push({id:p.id,a:norm(a)})));ALIAS.sort((x,y)=>y.a.length-x.a.length);
+  $("#esempi").innerHTML=DATA.esempi.map(e=>`<button>${esc(e)}</button>`).join("");
+  $$("#esempi button").forEach(b=>b.onclick=()=>{$("#q").value=b.textContent;rispondi(b.textContent)});
+}
+function trovaPermessi(q){
+  let t=" "+norm(q).replace(/[^a-z0-9]+/g," ")+" ";const usati=[];const trovati=[];
+  for(const al of ALIAS){let from=0;const pat=" "+al.a+" ";let p;
+    while((p=t.indexOf(pat,from))>=0){const fine=p+pat.length;
+      if(!usati.some(([s,e])=>p<e&&fine>s)){usati.push([p,fine]);trovati.push({id:al.id,pos:p,alias:al.a,prima:t.slice(Math.max(0,p-12),p)})}
+      from=fine-1}}
+  trovati.sort((a,b)=>a.pos-b.pos);
+  const unici=[];trovati.forEach(x=>{if(!unici.some(u=>u.id===x.id))unici.push(x)});return unici;
+}
+const INTENTI=[
+ ["conversione",/\b(convert|conversion|trasform|passare|passaggio|cambiar|cambio (di |del )?(permesso|titolo|motivo)|mutare|tramutare)/],
+ ["rinnovo",/\b(rinnov|prorog|scadut|scadenz)/],
+ ["lavoro",/\b(lavorar|puo lavorare|attivita lavorativa|svolgere attivita|assumer|assunzion)/],
+ ["durata",/\b(durata|quanto dura|validita|quanti anni|quanti mesi)/],
+ ["documenti",/\b(document|cosa (deve )?portare|kit|marca da bollo|bollettino|allegat)/],
+ ["requisiti",/\b(requisit|condizion|cosa serve|chi puo|diritto|spetta|rilasciare|rilascio|ottenere)/],
+ ["diniego",/\b(rifiut|negar|diniego|revoc|ostativ|precedent|condann|reat|espuls)/],
+ ["reddito",/\b(reddit|stipendio|guadagn|assegno sociale|soglia)/]
+];
+function capisci(q){
+  const n=norm(q);const perm=trovaPermessi(q);const intenti=INTENTI.filter(([k,r])=>r.test(n)).map(([k])=>k);
+  let da=null,a=null;
+  if(perm.length>=2){
+    const ruolo=x=>{const pr=x.prima.trim().split(" ").pop();if(/^(in|a|ad|verso|al|alla|nel|nella|uno|un)$/.test(pr))return"a";if(/^(da|dal|dalla|dallo)$/.test(pr))return"da";return null};
+    const r=perm.map(ruolo);
+    if(r.includes("a")){a=perm[r.indexOf("a")];da=perm.find((x,i)=>i!==r.indexOf("a"))}
+    else if(r.includes("da")){da=perm[r.indexOf("da")];a=perm.find((x,i)=>i!==r.indexOf("da"))}
+    else{da=perm[0];a=perm[1]}
+    if(!intenti.includes("conversione"))intenti.unshift("conversione");
+  }
+  return {perm,intenti,da:da&&da.id,a:a&&a.id};
+}
+function conversione(da,a){
+  const p=P[da];if(!p)return null;const c=(p.conversioni||[]).find(x=>x.a===a);
+  return c||null;
+}
+
+/* ---------- vista: domanda ---------- */
+function rispondi(q){
+  q=q.trim();const out=$("#risposta");if(!q){out.innerHTML="";return}
+  const c=capisci(q);let h="";
+  const nomi=c.perm.map(x=>"<b>"+esc(P[x.id].breve||P[x.id].nome)+"</b>").join(", ");
+  h+=nomi?`<div class="capito">Ho capito: ${nomi}${c.intenti.length?" · argomento: <b>"+c.intenti.join(", ")+"</b>":""}. Se non è corretto, riformula indicando i permessi con il loro nome.</div>`:`<div class="capito">Nessun tipo di permesso indicato nella domanda: risultati dalla ricerca nella banca dati.</div>`;
+  if(c.da&&c.a&&c.da!==c.a){
+    const cv=conversione(c.da,c.a);const pda=P[c.da],pa=P[c.a];
+    if(cv){const e=ESITI[cv.esito];
+      h+=`<div class="verdetto"><div class="timbro ${e[1]}">${e[0]}<small>${e[4]}</small></div><div>
+      <h2>Da ${esc(pda.nome)} a ${esc(pa.nome)}</h2><p class="inbreve">${esc(cv.sintesi)}</p>
+      ${cv.condizioni&&cv.condizioni.length?"<h3>Condizioni da verificare</h3><ul>"+cv.condizioni.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":""}
+      ${cv.nota?`<div class="avviso">${esc(cv.nota)}</div>`:""}
+      <div class="norme">${(cv.norme||[]).map(btnNorma).join("")}</div>
+      <p style="margin:14px 0 0"><button class="btn sec" onclick="apriScheda('${pa.id}')">Apri scheda ${esc(pa.breve||pa.nome)}</button> <button class="btn sec" onclick="apriScheda('${pda.id}')">Apri scheda ${esc(pda.breve||pda.nome)}</button></p>
+      </div></div>`;
+    }else{
+      h+=`<div class="verdetto"><div class="timbro t-ver">VERIFICARE<small>Non in banca dati</small></div><div><h2>Da ${esc(pda.nome)} a ${esc(pa.nome)}</h2>
+      <p class="inbreve">La banca dati non contiene una regola per questa conversione. Non presumere che sia ammessa: verifica le norme indicate nelle due schede e le circolari ministeriali.</p>
+      <p style="margin:14px 0 0"><button class="btn sec" onclick="apriScheda('${pda.id}')">Scheda ${esc(pda.breve||pda.nome)}</button></p></div></div>`;
+    }
+  }else if(c.perm.length===1){
+    const p=P[c.perm[0].id];h+=rispostaSezione(p,c.intenti);
+  }
+  const rf=cerca(q,d=>d.tipo==="faq",3).filter(r=>r.s>2.5);
+  if(rf.length){h+=`<div class="blocco"><h3>${c.perm.length?"Domande collegate":"Risposte trovate"}</h3>`+rf.map(r=>{const f=DATA.faq[r.d.i];return `<div class="ris-item"><div style="font-weight:600">${esc(f.q)}</div><div>${esc(f.a)}</div><div class="norme">${(f.norme||[]).map(btnNorma).join("")}</div></div>`}).join("")+"</div>"}
+  const rn=cerca(q,d=>d.tipo==="art",5);
+  if(rn.length){h+=`<div class="blocco"><h3>Articoli pertinenti (sintesi)</h3>`+rn.map(r=>`<div class="ris-item"><div class="tit" onclick="apriNorma('${r.d.lid}','${esc(r.d.num)}')">${esc(r.d.tit)}</div><div>${evidenzia(DATA.norme.find(l=>l.id===r.d.lid).articoli.find(a=>a.n===r.d.num).s,q)}</div></div>`).join("")+"</div>"}
+  const ru=cerca(q,d=>d.tipo==="uff",4);
+  if(ru.length){h+=`<div class="blocco"><h3>Nei testi ufficiali caricati</h3>`+ru.map(r=>`<div class="ris-item"><div class="tit" onclick="apriUfficiale(${r.d.ti},${r.d.ai})">${esc(r.d.tit)}</div><div class="fonte">${evidenzia(r.d.corpo,q,320)}</div></div>`).join("")+"</div>"}
+  else if(!(store.get("testi",[])).length){h+=`<p class="fonte" style="font-size:13px;color:var(--grigio);margin-top:14px">Suggerimento: carica i testi integrali delle leggi nella sezione Testi ufficiali per vedere anche il testo letterale degli articoli.</p>`}
+  if(!c.perm.length&&!rf.length&&!rn.length){h+=`<div class="avviso rosso">Nessuna risposta affidabile trovata nella banca dati. Prova a usare i nomi dei permessi (es. "motivi familiari", "lavoro subordinato", "studio") oppure consulta la sezione Tipi di permesso.</div>`}
+  h+=`<p class="piede">${esc(DATA.avvertenza)}</p>`;
+  out.innerHTML=h;
+}
+function rispostaSezione(p,intenti){
+  const i=intenti[0]||"requisiti";let titolo,corpo="";
+  const lista=a=>"<ul>"+a.map(x=>"<li>"+esc(typeof x==="string"?x:x.t)+(x.rif?` <span class="fonte" style="color:var(--grigio);font-size:12.5px">(${esc(x.rif)})</span>`:"")+"</li>").join("")+"</ul>";
+  if(i==="conversione"){titolo="In quali permessi si può convertire";corpo=p.conversioni&&p.conversioni.length?'<ul class="conv-lista">'+p.conversioni.map(cv=>`<li><span class="pill ${ESITI[cv.esito][2]}">${ESITI[cv.esito][0]}</span><span><b>${esc(P[cv.a]?P[cv.a].nome:cv.a)}</b> – ${esc(cv.sintesi)}</span></li>`).join("")+"</ul>":"<p>Nessuna conversione prevista in banca dati.</p>"}
+  else if(i==="rinnovo"){titolo="Rinnovo";corpo="<p>"+esc(p.rinnovo)+"</p>"}
+  else if(i==="lavoro"){titolo="Si può lavorare?";corpo="<p>"+esc(p.lavoro)+"</p>"}
+  else if(i==="durata"){titolo="Durata";corpo="<p>"+esc(p.durata)+"</p>"}
+  else if(i==="documenti"){titolo="Documenti";corpo=lista(p.documenti||[])}
+  else if(i==="diniego"){titolo="Cause di diniego e revoca";corpo=lista((p.diniego||[]).concat(["Vedi anche i requisiti generali e le cause ostative comuni"]))}
+  else{titolo="Requisiti";corpo=lista(p.requisiti)}
+  return `<div class="verdetto"><div class="timbro t-si" style="color:var(--petrolio)">SCHEDA<small>${esc(p.breve||"")}</small></div><div><h2>${esc(p.nome)}: ${titolo.toLowerCase()}</h2>${corpo}
+  <div class="norme">${(p.norme||[]).map(btnNorma).join("")}</div>
+  <p style="margin:14px 0 0"><button class="btn sec" onclick="apriScheda('${p.id}')">Apri la scheda completa</button></p></div></div>`;
+}
+function btnNorma(rif){const m=trovaRif(rif);return `<button class="norma" ${m?`onclick="apriNorma('${m[0]}','${m[1]}')"`:""}>${esc(rif)}</button>`}
+function trovaRif(rif){
+  const n=norm(rif);
+  for(const l of DATA.norme){if(!(l.chiavi||[]).some(k=>n.includes(norm(k))))continue;
+    const m=n.match(/art\.?\s*(\d+[- ]?(bis|ter|quater|quinquies|sexies|septies|octies|novies)?(\.\d+)?)/);
+    if(m){const num=m[1].replace(" ","-");const a=l.articoli.find(a=>norm(a.n)===num);if(a)return[l.id,a.n]}
+    return[l.id,""]}
+  return null;
+}
+
+/* ---------- vista: permessi ---------- */
+function vistaPermessi(){
+  const cats=[...new Set(DATA.permessi.map(p=>p.categoria))];
+  $("#v-permessi").innerHTML=`<h1>Tipi di permesso</h1><p class="sotto">${DATA.permessi.length} schede. Ogni scheda ha requisiti spuntabili, durata, lavoro consentito, conversioni e norme.</p>
+  <div class="filtri"><input id="p-cerca" type="search" placeholder="Filtra per nome (es. famiglia, studio, protezione)"></div><div id="p-elenco"></div>`;
+  const disegna=()=>{const f=norm($("#p-cerca").value);
+    $("#p-elenco").innerHTML=cats.map(c=>{const ps=DATA.permessi.filter(p=>p.categoria===c&&(!f||norm(p.nome+" "+(p.alias||[]).join(" ")+" "+p.sintesi).includes(f)));
+      return ps.length?`<div class="gruppo-tit">${esc(c)}</div><div class="elenco">`+ps.map(p=>`<button class="voce" onclick="apriScheda('${p.id}')"><b>${esc(p.nome)}</b><span>${esc(p.norme[0]||"")}</span></button>`).join("")+"</div>":""}).join("")||"<p>Nessun permesso corrisponde al filtro.</p>"};
+  $("#p-cerca").oninput=disegna;disegna();
+}
+function apriScheda(id){
+  const p=P[id];mostra("permessi",true);const salv=store.get("spunte_"+id,{});
+  const lista=a=>"<ul>"+(a||[]).map(x=>"<li>"+esc(typeof x==="string"?x:x.t)+(x.rif?` <span style="color:var(--grigio);font-size:12.5px">(${esc(x.rif)})</span>`:"")+"</li>").join("")+"</ul>";
+  $("#v-permessi").innerHTML=`<button class="indietro" onclick="vistaPermessi()">‹ Tutti i permessi</button>
+  <div class="scheda-testa"><div><h1>${esc(p.nome)}</h1><p class="sotto" style="margin-bottom:0">${esc(p.sintesi)}</p></div><button class="btn sec no-stampa" onclick="window.print()">Stampa scheda</button></div>
+  <div class="fatti">
+   <div class="fatto"><div class="et">Durata</div><div class="va">${esc(p.durata)}</div></div>
+   <div class="fatto"><div class="et">Attività lavorativa</div><div class="va">${esc(p.lavoro)}</div></div>
+   <div class="fatto"><div class="et">Chi decide</div><div class="va">${esc(p.competenza||"Questore")}</div></div>
+  </div>
+  ${p.procedura&&p.procedura.length?`<h3>Percorso della pratica</h3><div class="flusso">${p.procedura.map(s=>"<div>"+esc(s)+"</div>").join("")}</div>`:""}
+  <div class="colonne"><div>
+   <div class="blocco"><h3>Requisiti</h3><ul class="req">${p.requisiti.map((r,i)=>`<li><input type="checkbox" id="rq${i}" ${salv[i]?"checked":""}><label for="rq${i}">${esc(r.t)}${r.rif?`<span class="rif">${esc(r.rif)}</span>`:""}</label></li>`).join("")}</ul>
+    <div class="esito-req" id="esito-req"></div>
+    <p class="no-stampa" style="margin:8px 0 0"><button class="btn sec" id="azzera" style="padding:5px 12px;font-size:13px">Azzera spunte</button></p></div>
+   <div class="blocco"><h3>Documenti di norma richiesti</h3>${lista(p.documenti)}</div>
+   ${p.diniego&&p.diniego.length?`<div class="blocco"><h3>Cause specifiche di diniego o revoca</h3>${lista(p.diniego)}<p style="font-size:13px;margin:0">Valgono inoltre le <a href="#" onclick="mostra('generali');return false">cause ostative generali</a>.</p></div>`:""}
+  </div><div>
+   <div class="blocco"><h3>Rinnovo</h3><p style="margin:0">${esc(p.rinnovo)}</p></div>
+   <div class="blocco"><h3>Conversioni</h3>${p.conversioni&&p.conversioni.length?'<ul class="conv-lista">'+p.conversioni.map(cv=>`<li><span class="pill ${ESITI[cv.esito][2]}">${ESITI[cv.esito][0]}</span><span><a href="#" onclick="apriConv('${p.id}','${cv.a}');return false"><b>${esc(P[cv.a]?P[cv.a].nome:cv.a)}</b></a><br>${esc(cv.sintesi)}</span></li>`).join("")+"</ul>":"<p style='margin:0'>Non convertibile in altri permessi.</p>"}</div>
+   ${p.novita&&p.novita.length?`<div class="blocco"><h3>Novità normative</h3>${lista(p.novita)}</div>`:""}
+   ${p.note&&p.note.length?`<div class="blocco"><h3>Attenzione</h3>${lista(p.note)}</div>`:""}
+   <div class="blocco"><h3>Norme</h3><div class="norme" style="margin:0">${p.norme.map(btnNorma).join("")}</div></div>
+  </div></div><p class="piede">${esc(DATA.avvertenza)}</p>`;
+  const agg=()=>{const s={};let n=0;p.requisiti.forEach((r,i)=>{if($("#rq"+i).checked){s[i]=1;n++}});store.set("spunte_"+id,s);
+    $("#esito-req").innerHTML=n===p.requisiti.length?`<span style="color:var(--si)">Tutti i requisiti risultano spuntati. Controlla anche le cause ostative generali prima di decidere.</span>`:`<span style="color:var(--grigio)">${n} di ${p.requisiti.length} requisiti spuntati.</span>`};
+  p.requisiti.forEach((r,i)=>$("#rq"+i).onchange=agg);$("#azzera").onclick=()=>{p.requisiti.forEach((r,i)=>$("#rq"+i).checked=false);agg()};agg();
+  window.scrollTo(0,0);
+}
+
+/* ---------- vista: conversioni ---------- */
+function vistaConversioni(){
+  const ord=DATA.permessi.filter(p=>!p.escludiMatrice);
+  const opz=ord.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("");
+  $("#c-da").innerHTML=opz;$("#c-a").innerHTML=opz;
+  if(!$("#c-a").dataset.init){$("#c-da").value="famiglia";$("#c-a").value="lav_sub";$("#c-a").dataset.init=1}
+  const esito=()=>{const da=$("#c-da").value,a=$("#c-a").value;if(da===a){$("#c-esito").innerHTML="<p>Scegli due permessi diversi.</p>";return}
+    const cv=conversione(da,a);const e=ESITI[cv?cv.esito:"ver"];
+    $("#c-esito").innerHTML=`<div class="verdetto"><div class="timbro ${e[1]}">${e[0]}<small>${e[4]}</small></div><div><h2>Da ${esc(P[da].nome)} a ${esc(P[a].nome)}</h2><p class="inbreve">${esc(cv?cv.sintesi:"Nessuna regola in banca dati per questa coppia. Non presumere che la conversione sia ammessa.")}</p>
+    ${cv&&cv.condizioni&&cv.condizioni.length?"<h3>Condizioni</h3><ul>"+cv.condizioni.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":""}${cv&&cv.nota?`<div class="avviso">${esc(cv.nota)}</div>`:""}
+    <div class="norme">${(cv&&cv.norme||[]).map(btnNorma).join("")}</div></div></div>`};
+  $("#c-da").onchange=esito;$("#c-a").onchange=esito;esito();
+  const cols=DATA.matriceColonne.map(id=>P[id]);
+  $("#matrice").innerHTML=`<thead><tr><th style="height:auto;vertical-align:bottom;padding:6px 8px;text-align:left;position:sticky;left:0;z-index:3">Da ↓ &nbsp; A →</th>${cols.map(p=>`<th title="${esc(p.nome)}"><div>${esc(p.breve||p.nome)}</div></th>`).join("")}</tr></thead><tbody>`+
+   ord.map(r=>`<tr><th title="${esc(r.nome)}">${esc(r.breve||r.nome)}</th>`+cols.map(c=>{if(r.id===c.id)return'<td class="c-x"></td>';const cv=conversione(r.id,c.id);const e=cv?cv.esito:"ver";
+     const lab={si:"SÌ",no:"NO",cond:"COND.",ver:"?"}[e];return `<td class="${ESITI[e][3]}"><button title="${esc(r.nome)} → ${esc(c.nome)}: ${ESITI[e][4]}" onclick="apriConv('${r.id}','${c.id}')">${lab}</button></td>`}).join("")+"</tr>").join("")+"</tbody>";
+}
+function apriConv(da,a){mostra("conversioni");$("#c-da").value=da;$("#c-a").value=a;$("#c-da").onchange();window.scrollTo(0,0)}
+
+/* ---------- vista: generali ---------- */
+function vistaGenerali(){
+  const g=DATA.generali;
+  $("#v-generali").innerHTML=`<h1>Requisiti generali e cause ostative</h1><p class="sotto">Valgono per tutti i permessi, salvo le eccezioni indicate (in particolare protezione internazionale, protezione speciale e ricongiunti/familiari).</p>`+
+   g.sezioni.map(s=>`<div class="blocco"><h3>${esc(s.titolo)}</h3>${s.testo?`<p>${esc(s.testo)}</p>`:""}${s.punti?"<ul>"+s.punti.map(x=>"<li>"+esc(x.t||x)+(x.rif?` <span style="color:var(--grigio);font-size:12.5px">(${esc(x.rif)})</span>`:"")+"</li>").join("")+"</ul>":""}${s.norme?`<div class="norme">${s.norme.map(btnNorma).join("")}</div>`:""}</div>`).join("")+`<p class="piede">${esc(DATA.avvertenza)}</p>`;
+}
+
+/* ---------- vista: normativa ---------- */
+function vistaNormativa(f){
+  f=norm(f||"");
+  $("#n-elenco").innerHTML=DATA.norme.map(l=>{const arts=l.articoli.filter(a=>!f||norm(l.sigla+" "+a.n+" "+a.r+" "+a.s).includes(f)||norm("art "+a.n)===f||norm(a.n)===f);
+    if(f&&!arts.length)return"";
+    return `<details class="legge" id="L-${l.id}" ${f?"open":""}><summary>${esc(l.sigla)}<span>${esc(l.titolo)}</span></summary>${arts.map(a=>`<div class="art" id="A-${l.id}-${esc(a.n)}"><b>Art. ${esc(a.n)}</b>${a.r?" – "+esc(a.r):""}<div class="s">${esc(a.s)}</div></div>`).join("")}${l.url?`<div class="art" style="font-size:13px">Testo vigente: <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url)}</a></div>`:""}</details>`}).join("")||"<p>Nessun articolo trovato.</p>";
+}
+function apriNorma(lid,num){mostra("normativa");$("#n-cerca").value="";vistaNormativa();const d=$("#L-"+lid);if(!d)return;d.open=true;
+  const el=num?document.getElementById("A-"+lid+"-"+num):d;if(el){el.scrollIntoView({block:"center"});el.classList.remove("lampeggia");void el.offsetWidth;el.classList.add("lampeggia")}}
+
+/* ---------- vista: reddito ---------- */
+function vistaReddito(){
+  const r=DATA.reddito;if(!$("#r-as").value)$("#r-as").value=r.assegnoSocialeAnnuo;
+  const calc=()=>{const tipo=$("#r-tipo").value,fam=Math.max(0,+$("#r-fam").value||0),m14=Math.min(fam,Math.max(0,+$("#r-min14").value||0)),as=+$("#r-as").value||0,dich=+$("#r-dich").value||0;
+    let soglia,spieg;
+    if(tipo==="base"){soglia=as;spieg="Importo annuo dell'assegno sociale (parametro minimo comunemente usato per il solo richiedente)."}
+    else if(tipo==="ric"&&m14>=2&&fam===m14){soglia=as*2;spieg="Ricongiungimento di due o più figli minori di 14 anni: il reddito non deve essere inferiore al doppio dell'assegno sociale (art. 29 c.3 lett. b)."}
+    else{soglia=as*(1+.5*fam);spieg=`Assegno sociale aumentato della metà per ogni familiare (${fam} × 50%).`;if(m14>=2){const alt=as*2+as*.5*(fam-m14);if(alt>soglia){soglia=alt;spieg+=` Con ${m14} figli minori di 14 anni si applica il doppio dell'assegno sociale per i minori, più la metà per ciascun altro familiare.`}}}
+    if(tipo==="ue")spieg+=" Per il permesso UE il reddito va considerato insieme a quello dei familiari conviventi; se l'istanza riguarda anche i familiari si applicano i parametri dell'art. 29 c.3 lett. b.";
+    const f=x=>x.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
+    $("#r-esito").innerHTML=`<h3>Soglia minima annua</h3><div class="cifra">€ ${f(soglia)} <small>/ anno</small></div><div style="color:var(--grigio)">€ ${f(soglia/12)} al mese</div><p>${esc(spieg)}</p>
+    ${dich?`<div class="avviso ${dich>=soglia?"":"rosso"}" style="${dich>=soglia?"border-color:var(--si);background:var(--si-bg)":""}">Reddito dichiarato € ${f(dich)}: ${dich>=soglia?"pari o superiore alla soglia.":"inferiore alla soglia di € "+f(soglia-dich)+"."}</div>`:""}
+    <p style="font-size:13px;color:var(--grigio)">${esc(r.nota)}</p><div class="norme">${r.norme.map(btnNorma).join("")}</div>`};
+  ["#r-tipo","#r-fam","#r-min14","#r-as","#r-dich"].forEach(s=>$(s).oninput=calc);calc();
+}
+
+/* ---------- vista: testi ufficiali ---------- */
+function vistaTesti(){
+  const t=store.get("testi",[]);
+  $("#t-elenco").innerHTML=t.length?t.map((x,i)=>`<div class="ris-item"><div class="tit" onclick="apriUfficiale(${i},0)">${esc(x.nome)}</div><div class="fonte">${dividiArticoli(x.testo).length} articoli riconosciuti · salvato il ${esc(x.data)} · <a href="#" onclick="eliminaTesto(${i});return false">elimina</a></div><div id="uff-${i}"></div></div>`).join(""):"<p style='margin:0'>Nessun testo salvato. Inizia dal Testo unico immigrazione (D.Lgs. 286/1998) e dal regolamento (DPR 394/1999).</p>";
+  $("#t-link").innerHTML="<ul>"+DATA.norme.filter(l=>l.url).map(l=>`<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.sigla)} – ${esc(l.titolo)}</a></li>`).join("")+"</ul>";
+}
+function apriUfficiale(ti,ai){mostra("testi");const t=store.get("testi",[])[ti];if(!t)return;const arts=dividiArticoli(t.testo);
+  const box=$("#uff-"+ti);box.innerHTML=`<div class="riga"><select id="uff-sel-${ti}" style="padding:8px;border:1px solid var(--linea);border-radius:8px;max-width:100%">${arts.map((a,i)=>`<option value="${i}" ${i===ai?"selected":""}>${esc(a.tit.slice(0,90))}</option>`).join("")}</select></div><pre id="uff-txt-${ti}" style="white-space:pre-wrap;background:var(--carta);padding:12px;border-radius:8px;font:13.5px/1.55 var(--testo);max-height:60vh;overflow:auto"></pre>`;
+  const show=()=>{const a=arts[+$("#uff-sel-"+ti).value];$("#uff-txt-"+ti).textContent=a.tit+"\n\n"+a.corpo.trim()};$("#uff-sel-"+ti).onchange=show;show();box.scrollIntoView({block:"start"})}
+function eliminaTesto(i){const t=store.get("testi",[]);if(!confirm("Eliminare «"+t[i].nome+"» da questo computer?"))return;t.splice(i,1);store.set("testi",t);INDICE=null;vistaTesti()}
+$("#t-salva").onclick=()=>{const nome=$("#t-nome").value.trim(),testo=$("#t-testo").value;
+  if(!nome||testo.trim().length<200){$("#t-msg").textContent="Inserisci un nome e incolla il testo completo della legge.";return}
+  const t=store.get("testi",[]);t.push({nome,testo,data:new Date().toLocaleDateString("it-IT")});
+  if(!store.set("testi",t)){$("#t-msg").textContent="Spazio di archiviazione del browser esaurito o non disponibile: il testo non è stato salvato.";return}
+  INDICE=null;$("#t-nome").value="";$("#t-testo").value="";$("#t-msg").textContent="Testo salvato: "+dividiArticoli(testo).length+" articoli riconosciuti.";vistaTesti()};
+
+/* ---------- navigazione ---------- */
+const VISTE={aggiornamenti:vistaAggiornamenti,permessi:vistaPermessi,conversioni:vistaConversioni,generali:vistaGenerali,normativa:()=>vistaNormativa($("#n-cerca").value),reddito:vistaReddito,testi:vistaTesti};
+function mostra(v,senzaRender){$$(".vista").forEach(s=>s.classList.toggle("attiva",s.id==="v-"+v));$$(".rail button[data-v]").forEach(b=>b.toggleAttribute("aria-current",b.dataset.v===v)&&b.setAttribute("aria-current","page"));if(!senzaRender&&VISTE[v])VISTE[v]()}
+$$(".rail button[data-v]").forEach(b=>b.onclick=()=>{mostra(b.dataset.v);window.scrollTo(0,0)});
+$("#n-cerca").oninput=e=>vistaNormativa(e.target.value);
+$("#vai").onclick=()=>rispondi($("#q").value);
+$("#q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();rispondi($("#q").value)}});
+
+/* ---------- dimensione testo ---------- */
+function dimensione(n){document.body.classList.remove("dim-1","dim-2");if(n>0)document.body.classList.add("dim-"+n);$$(".dimensione button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.dim===n)));store.set("dim",n)}
+$$(".dimensione button").forEach(b=>b.onclick=()=>dimensione(+b.dataset.dim));
+dimensione(store.get("dim",0));
+
+/* ---------- aggiornamenti ---------- */
+const dataIt=s=>{try{return new Date(s).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"})}catch(e){return s}};
+const oraIt=s=>new Date(s).toLocaleString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const giorniDa=s=>s?(Date.now()-new Date(s).getTime())/864e5:Infinity;
+function valida(d){return d&&typeof d.revisione==="number"&&Array.isArray(d.permessi)&&d.permessi.length>=10&&Array.isArray(d.norme)&&Array.isArray(d.faq)&&d.generali&&d.reddito&&d.permessi.every(p=>p.id&&p.nome&&Array.isArray(p.requisiti))}
+function urlSicuro(u){return /^https:\/\//.test(String(u||""))}
+function fonti(){const a=(DATA_INTEGRATA.aggiornamenti||{}).url||[];return a.filter(urlSicuro)}
+let STATO={tipo:"attesa",testo:"Controllo aggiornamenti…"};
+function disegnaStato(){
+  const c=store.get("controllo",null);const da=DATA.dataISO;
+  let tipo,testo;
+  if(!fonti().length){tipo="attenzione";testo=`<b>Aggiornamento automatico non attivo</b><br>Banca dati del ${esc(dataIt(da))}`}
+  else if(STATO.tipo==="attesa"){tipo="attesa";testo=`<b>Controllo in corso…</b><br>Banca dati del ${esc(dataIt(da))}`}
+  else if(c&&c.esito==="ok"&&giorniDa(c.quando)<1){tipo="ok";testo=`<b>Programma aggiornato</b><br>Banca dati del ${esc(dataIt(da))}<br>Controllato il ${esc(oraIt(c.quando))}`}
+  else{const ok=store.get("ultimoOk",null);const vecchio=giorniDa(ok)>14;tipo=vecchio?"errore":"attenzione";
+    testo=`<b>Non è stato possibile controllare</b><br>Banca dati del ${esc(dataIt(da))}<br>${ok?"Ultimo controllo riuscito: "+esc(oraIt(ok)):"Nessun controllo riuscito"}${vecchio?"<br>Collegati a internet e riapri il programma.":""}`}
+  const s=$("#stato");s.className="stato "+tipo;$("#stato-txt").innerHTML=testo;
+  if($("#v-aggiornamenti").classList.contains("attiva"))vistaAggiornamenti();
+}
+function banner(tipo,html){$("#banner").innerHTML=`<div class="banner ${tipo}" role="status"><div>${html}</div><button class="chiudi" aria-label="Chiudi avviso" onclick="this.parentNode.remove()">×</button></div>`}
+async function scarica(url){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),12000);
+  try{const r=await fetch(url+(url.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store",signal:ctl.signal});if(!r.ok)throw new Error("HTTP "+r.status);return await r.json()}finally{clearTimeout(to)}}
+async function controlla(manuale){
+  if(!fonti().length){disegnaStato();if(manuale)$("#a-msg").textContent="Aggiornamento automatico non ancora configurato.";return}
+  STATO.tipo="attesa";disegnaStato();if(manuale)$("#a-msg").textContent="Controllo in corso…";
+  let remoto=null,err=null;
+  for(const u of fonti()){try{remoto=await scarica(u);if(valida(remoto))break;remoto=null;err="dati non validi"}catch(e){err=e.message}}
+  STATO.tipo="fatto";
+  if(!remoto){store.set("controllo",{quando:new Date().toISOString(),esito:"errore",errore:String(err)});disegnaStato();
+    if(manuale)$("#a-msg").textContent="Controllo non riuscito: verifica la connessione a internet.";
+    else if(giorniDa(store.get("ultimoOk",null))>14)banner("errore",`<b>Non è possibile verificare se la banca dati è aggiornata.</b> La versione in uso è del ${esc(dataIt(DATA.dataISO))}. Collegati a internet e riapri il programma prima di decidere su casi dubbi.`);
+    return}
+  const ora=new Date().toISOString();store.set("controllo",{quando:ora,esito:"ok"});store.set("ultimoOk",ora);
+  if(remoto.revisione>DATA.revisione){
+    if((remoto.appMinima||0)>APP_VERSIONE){store.set("programmaNuovo",remoto.programma||"");disegnaStato();
+      banner("attenzione",`<b>È disponibile una nuova versione del programma.</b> Per ricevere la banca dati del ${esc(dataIt(remoto.dataISO))} serve sostituire il file del programma. <a href="#" onclick="scaricaProgramma();return false">Scarica la nuova versione</a> e sostituisci il file attuale.`);return}
+    const prima=DATA.revisione;store.set("banca",remoto);attiva(remoto);
+    const nov=(remoto.storico||[]).filter(s=>s.revisione>prima).flatMap(s=>s.novita||[]);
+    banner("ok",`<b>Banca dati aggiornata automaticamente</b> alla versione del ${esc(dataIt(remoto.dataISO))}.${nov.length?"<ul>"+nov.slice(0,6).map(n=>"<li>"+esc(n)+"</li>").join("")+"</ul>":""}`);
+    const v=$$(".vista.attiva")[0];if(v){const id=v.id.slice(2);if(VISTE[id])VISTE[id]()}
+    if($("#q").value.trim()&&$("#v-chiedi").classList.contains("attiva"))rispondi($("#q").value);
+    if(manuale)$("#a-msg").textContent="Aggiornamento scaricato e applicato.";
+  }else if(manuale)$("#a-msg").textContent="Nessun aggiornamento: la banca dati è già la più recente.";
+  disegnaStato();
+}
+async function scaricaProgramma(){const u=(DATA_INTEGRATA.aggiornamenti||{}).programma;if(!urlSicuro(u))return;
+  try{const r=await fetch(u+"?t="+Date.now(),{cache:"no-store"});const txt=await r.text();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/html"}));a.download="Programma Immigrazione.html";document.body.appendChild(a);a.click();a.remove();
+    banner("ok","File scaricato nella cartella Download. Chiudi il programma e sostituisci il vecchio file «Programma Immigrazione.html» con quello nuovo.")}
+  catch(e){banner("errore","Download non riuscito: verifica la connessione a internet.")}}
+function vistaAggiornamenti(){
+  const c=store.get("controllo",null),ok=store.get("ultimoOk",null);
+  $("#a-fatti").innerHTML=`<div class="fatto"><div class="et">Banca dati in uso</div><div class="va">${esc(dataIt(DATA.dataISO))} (revisione ${DATA.revisione})</div></div>
+   <div class="fatto"><div class="et">Ultimo controllo</div><div class="va">${c?esc(oraIt(c.quando))+(c.esito==="ok"?" – riuscito":" – non riuscito"):"mai"}</div></div>
+   <div class="fatto"><div class="et">Aggiornamento automatico</div><div class="va">${fonti().length?"Attivo, a ogni avvio con internet":"Non ancora configurato"}</div></div>`;
+  $("#a-app").innerHTML=`<p style="color:var(--grigio);font-size:14.5px">Versione del programma: ${APP_VERSIONE}. Le norme vengono aggiornate senza sostituire il file; se un giorno servirà un programma nuovo, comparirà un avviso con il pulsante per scaricarlo.</p>`;
+  const st=(DATA.storico||[]).slice().sort((a,b)=>b.revisione-a.revisione);
+  $("#a-storico").innerHTML=st.length?st.map(s=>`<div class="blocco"><h3 style="margin:0 0 6px">${esc(dataIt(s.data))} – revisione ${s.revisione}</h3><ul style="margin:0;padding-left:20px">${(s.novita||[]).map(n=>"<li>"+esc(n)+"</li>").join("")}</ul></div>`).join(""):"<p>Nessuna nota.</p>";
+}
+$("#a-ora").onclick=()=>controlla(true);
+
+/* ---------- avvio ---------- */
+(function avvio(){
+  const cache=store.get("banca",null);
+  if(cache&&valida(cache)&&cache.revisione>DATA_INTEGRATA.revisione&&(cache.appMinima||0)<=APP_VERSIONE)attiva(cache);else attiva(DATA_INTEGRATA);
+  disegnaStato();controlla(false);
+})();
+$("#piede").textContent="";
+</script>
+</body>
+</html>

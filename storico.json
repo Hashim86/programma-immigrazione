@@ -1,0 +1,17 @@
+[
+ {
+  "revisione": 1,
+  "data": "2026-10-30",
+  "novita": [
+   "Prima versione della banca dati: 42 tipi di permesso, conversioni, normativa e domande frequenti aggiornate al 30/10/2026."
+  ]
+ },
+ {
+  "revisione": 2,
+  "data": "2026-10-30",
+  "novita": [
+   "Programma più leggibile: testo più grande e dimensione regolabile.",
+   "Aggiornamento automatico della banca dati all'avvio, con stato sempre visibile."
+  ]
+ }
+]
