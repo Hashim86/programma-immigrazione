@@ -355,7 +355,10 @@ function trovaPermessi(q){
       from=fine-1}}
   trovati.sort((a,b)=>a.pos-b.pos);
   const unici=[];trovati.forEach(x=>{const u=unici.find(u=>u.id===x.id);if(!u)unici.push(x);else if(u.debole&&!x.debole)Object.assign(u,x)});
+  const fam=/\b(coniuge|moglie|marito|familiar|figli|genitor|partner|parente)/.test(norm(q));
+  unici.forEach(x=>{const sf=P[x.id]&&P[x.id].seFamiliare;if(fam&&sf&&!unici.some(u=>u.id===sf))x.id=sf});
   const forti=unici.filter(x=>!x.debole);
+  if(!forti.length&&unici.length>1)return unici.filter(x=>x.id!=="famiglia");
   return forti.length?forti:unici;
 }
 const INTENTI=[
@@ -425,7 +428,7 @@ function rispondi(q){
   }
   const GEN=new Set(tok("convertire conversione lavoro lavorare permesso soggiorno rinnovo rinnovare requisiti possibile chiedere diritto quanto dura"));
   const qSpec=tok(q).filter(w=>!GEN.has(w));
-  const legato=f=>{if(!c.perm.length)return true;const tx=" "+norm(f.q+" "+f.a+" "+(f.tag||[]).join(" "))+" ";return c.perm.some(x=>(P[x.id].alias||[]).some(al=>al.length>4&&!["lavoro","lavoro subordinato","subordinato","famiglia","familiare","familiari","motivi familiari"].includes(norm(al))&&tx.includes(" "+norm(al))))};
+  const legato=f=>{if(!c.perm.length)return true;const tx=" "+norm(f.q+" "+f.a+" "+(f.tag||[]).join(" "))+" ";return c.perm.some(x=>(x.alias.length>4&&!/lavoro|subordinato/.test(x.alias)&&tx.includes(" "+x.alias))||(P[x.id].alias||[]).some(al=>al.length>4&&!["lavoro","lavoro subordinato","subordinato","famiglia","familiare","familiari","motivi familiari","contratto di lavoro","lavoro dipendente","coniuge","moglie","marito"].includes(norm(al))&&tx.includes(" "+norm(al))))};
   const rf0=cerca(q,d=>d.tipo==="faq",6).filter(r=>r.s>4&&r.d.t.some(w=>qSpec.includes(w))&&legato(DATA.faq[r.d.i]));const top=rf0.length?rf0[0].s:0;const rf=rf0.filter(r=>r.s>=top*.55).slice(0,(c.da&&c.a)?2:3);
   if(rf.length){h+=`<div class="blocco"><h3>${c.perm.length?"Domande collegate":"Risposte trovate"}</h3>`+rf.map(r=>{const f=DATA.faq[r.d.i];return `<div class="ris-item"><div style="font-weight:600">${esc(f.q)}</div><div>${esc(f.a)}</div><div class="norme">${(f.norme||[]).map(btnNorma).join("")}</div></div>`}).join("")+"</div>"}
   const rn=cerca(q,d=>d.tipo==="art",5);

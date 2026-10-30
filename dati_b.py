@@ -256,7 +256,8 @@ NORME = [
   dict(n="26", r="Lavoro autonomo", s="Ingresso per attività non occasionale di lavoro autonomo: risorse adeguate, requisiti di legge, attestazione dell'autorità competente, alloggio, reddito superiore alla soglia di esenzione sanitaria. c.7-bis: la condanna irrevocabile per reati sul diritto d'autore o artt. 473-474 c.p. comporta revoca del permesso ed espulsione."),
   dict(n="26-bis", r="Investitori", s="Permesso di 2 anni, rinnovabile per 3, per investimenti di 2 milioni in titoli di Stato, 500.000 € in società, 250.000 € in start-up innovative o donazioni di 1 milione."),
   dict(n="27", r="Ingresso per lavoro in casi particolari", s="Elenco delle categorie fuori quota (dirigenti, docenti universitari, traduttori, distaccati, marittimi, artisti, sportivi, giornalisti, infermieri, nomadi digitali lett. q-bis, ecc.). Disciplina dei nomadi digitali al c.1-sexies; comunicazione al posto del nulla osta per alcune categorie (c.1-ter, 1-quater)."),
-  dict(n="27-ter", r="Ricercatori", s="Ingresso fuori quota con convenzione di accoglienza con istituto iscritto all'elenco MUR. Dopo la ricerca, permesso di 9-12 mesi per cercare lavoro o avviare impresa (c.9-bis)."),
+  dict(n="27-bis", r="Volontariato", s="Ingresso e soggiorno per partecipare a programmi di volontariato di interesse generale, nei limiti di un contingente fissato con decreto (triennale dal DL 146/2025). Età 25-35 anni, convenzione con l'organizzazione promotrice che si assume le spese; permesso di norma fino a 1 anno, massimo 18 mesi; non consente lavoro e non è convertibile né rinnovabile."),
+ dict(n="27-ter", r="Ricercatori", s="Ingresso fuori quota con convenzione di accoglienza con istituto iscritto all'elenco MUR. Dopo la ricerca, permesso di 9-12 mesi per cercare lavoro o avviare impresa (c.9-bis)."),
   dict(n="27-quater", r="Carta blu UE", s="Lavoro altamente qualificato: titolo terziario o esperienza, contratto di almeno 6 mesi, retribuzione non inferiore alla soglia annua. Durata 2 anni o contratto più 3 mesi. Cambio datore nei primi 12 mesi con autorizzazione ITL. Ricongiungimento indipendente dalla durata del permesso."),
   dict(n="27-quinquies", r="Trasferimenti intra-societari", s="Dirigenti, specialisti e lavoratori in formazione trasferiti all'interno del gruppo; durata massima 3 anni (1 per i lavoratori in formazione)."),
   dict(n="28", r="Diritto all'unità familiare", s="c.1: possono chiedere il ricongiungimento i titolari di LP o di permesso di almeno 1 anno per lavoro, protezione internazionale, studio, motivi religiosi o familiari. c.1-bis (DL 145/2024): per coniuge, figli maggiorenni invalidi e genitori servono 2 anni di soggiorno legale ininterrotto; non si applica ai titolari di protezione internazionale."),
@@ -278,12 +279,15 @@ NORME = [
   dict(n="28", r="Permesso per altri motivi (divieto di espulsione)", s="Permessi rilasciati quando la legge vieta l'espulsione: a) minore età; b) motivi familiari per i conviventi con parenti italiani; c) cure mediche per le donne in gravidanza."),
   dict(n="37", r="Iscrizione nelle liste di collocamento", s="Disciplina l'attesa occupazione del lavoratore che perde il posto."),
   dict(n="46", r="Rinnovo del permesso per studio", s="Il rinnovo richiede il superamento di almeno un esame nel primo anno e due negli anni successivi."),
+  dict(n="40", r="Casi particolari di ingresso per lavoro", s="Disciplina di dettaglio dei casi dell'art. 27 TU; il permesso dura quanto il rapporto o l'incarico. Richiamato anche per i programmi vacanza-lavoro (verificare il comma)."),
  ]),
  dict(id="ue30", sigla="D.Lgs. 30/2007", titolo="Libera circolazione dei cittadini UE e dei loro familiari", chiavi=["30/2007"], url="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2007-02-06;30", articoli=[
   dict(n="2", r="Definizioni di familiare", s="Coniuge, partner di unione registrata equiparata, discendenti under 21 o a carico, ascendenti a carico, anche del coniuge o partner."),
+  dict(n="6", r="Soggiorno fino a 3 mesi", s="Il cittadino UE e i familiari soggiornano fino a 3 mesi con il solo documento d'identità o passaporto; possono dichiarare la presenza."),
   dict(n="7", r="Diritto di soggiorno oltre 3 mesi", s="Il cittadino UE soggiorna se lavoratore, se dispone di risorse sufficienti e assicurazione sanitaria, o se studente con risorse e assicurazione; il diritto si estende ai familiari."),
   dict(n="10", r="Carta di soggiorno per familiari", s="Domanda entro 3 mesi dall'ingresso; rilascio entro 90 giorni; validità 5 anni o durata del soggiorno del cittadino UE se inferiore."),
   dict(n="12", r="Mantenimento del diritto in caso di divorzio", s="Il familiare conserva il diritto se il matrimonio è durato almeno 3 anni di cui 1 in Italia, se ha l'affidamento dei figli, in situazioni particolarmente difficili come la violenza domestica, o per diritto di visita al minore."),
+  dict(n="14", r="Diritto di soggiorno permanente", s="Il cittadino UE che ha soggiornato legalmente e continuativamente per 5 anni acquisisce il diritto di soggiorno permanente; si perde per assenze superiori a 2 anni consecutivi."),
   dict(n="17", r="Carta di soggiorno permanente", s="Dopo 5 anni di soggiorno legale e continuativo; validità 10 anni con rinnovo automatico."),
   dict(n="20", r="Limitazioni al diritto di soggiorno", s="Rifiuto e allontanamento solo per motivi di ordine pubblico, pubblica sicurezza o sanità pubblica."),
   dict(n="23", r="Familiari di cittadini italiani", s="c.1-bis (DL 69/2023): ai familiari di italiani che non hanno esercitato la libera circolazione si rilascia un permesso per motivi familiari ex art. 5 c.8 TU (FAMIT), non la carta di soggiorno UE."),
@@ -291,6 +295,7 @@ NORME = [
  ]),
  dict(id="d251", sigla="D.Lgs. 251/2007", titolo="Qualifiche e status di protezione internazionale", chiavi=["251/2007"], url="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2007-11-19;251", articoli=[
   dict(n="23", r="Permesso di soggiorno", s="Ai titolari dello status di rifugiato e di protezione sussidiaria è rilasciato un permesso di 5 anni, rinnovabile. Il Reg. UE 2024/1347 (dal 1/7/2026) fissa durate minime inferiori: resta la durata nazionale più favorevole."),
+  dict(n="22", r="Mantenimento dell'unità familiare", s="I familiari del titolare di protezione internazionale presenti in Italia che non hanno diritto autonomo alla protezione hanno diritti analoghi; ricevono il permesso per motivi familiari (art. 30 TU). Verificare l'impatto del Reg. UE 2024/1347."),
   dict(n="24", r="Documenti di viaggio", s="Documento di viaggio per i rifugiati (Convenzione di Ginevra); titolo di viaggio per i titolari di sussidiaria che non possono ottenere il passaporto."),
  ]),
  dict(id="d25", sigla="D.Lgs. 25/2008", titolo="Procedure per la protezione internazionale", chiavi=["25/2008"], url="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2008-01-28;25", articoli=[
@@ -303,6 +308,16 @@ NORME = [
  dict(id="l47", sigla="L. 47/2017", titolo="Misure di protezione dei minori stranieri non accompagnati", chiavi=["47/2017"], url="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2017-04-07;47", articoli=[
   dict(n="10", r="Permessi di soggiorno per minori", s="Permesso per minore età, richiedibile anche direttamente dal minore prima della nomina del tutore; permesso per motivi familiari per il minore affidato o sottoposto a tutela."),
   dict(n="13", r="Prosieguo amministrativo", s="c.2: il Tribunale per i minorenni può disporre l'affidamento ai servizi sociali oltre i 18 anni e non oltre i 21 per completare il percorso di integrazione."),
+ ]),
+ dict(id="brexit", sigla="Accordo di recesso UE-Regno Unito", titolo="Diritti dei cittadini britannici e dei familiari (Brexit)", chiavi=["Accordo di recesso"], articoli=[
+  dict(n="10", r="Ambito di applicazione personale", s="Si applica ai cittadini britannici che risiedevano in Italia in conformità al diritto UE prima della fine del periodo di transizione (31/12/2020) e ai loro familiari, anche nati o ricongiunti dopo nei casi previsti."),
+  dict(n="13", r="Diritti di soggiorno", s="I beneficiari conservano il diritto di soggiorno alle condizioni del diritto UE sulla libera circolazione."),
+  dict(n="15", r="Diritto di soggiorno permanente", s="Dopo 5 anni di soggiorno legale si acquisisce il soggiorno permanente; si perde solo per assenze superiori a 5 anni consecutivi."),
+  dict(n="18", r="Documenti di soggiorno", s="L'Italia rilascia ai beneficiari un documento di soggiorno elettronico (Questura): 5 anni, o 10 anni se titolari del diritto permanente."),
+  dict(n="26", r="Lavoratori frontalieri", s="I lavoratori frontalieri britannici conservano i diritti e ricevono un documento che li attesta."),
+ ]),
+ dict(id="dl34", sigla="DL 34/2020 (art. 103)", titolo="Emersione dei rapporti di lavoro 2020", chiavi=["34/2020"], articoli=[
+  dict(n="103", r="Emersione di rapporti di lavoro", s="c.1: istanza del datore di lavoro per concludere o regolarizzare un rapporto di lavoro in agricoltura, lavoro domestico o assistenza alla persona, con rilascio di permesso per lavoro. c.2: permesso temporaneo di 6 mesi per chi aveva un permesso scaduto dal 31/10/2019, convertibile in permesso per lavoro con contratto. Restano solo casi residui e contenzioso: verificare istruzioni ministeriali."),
  ]),
  dict(id="novita", sigla="Novità 2023-2026", titolo="Riforme recenti da tenere presenti", chiavi=["DL 20/2023", "20/2023", "DL 145/2024", "145/2024", "DL 146/2025", "146/2025", "83/2026", "DL 100/2026", "100/2026", "DL 168/2026", "168/2026", "201/2025", "115/2026", "69/2023", "36/2025"], articoli=[
   dict(n="DL 20/2023", r="Decreto Cutro, conv. L. 50/2023", s="Conversione studio-lavoro fuori quota; abolita la convertibilità di protezione speciale, calamità e cure mediche (istanze dall'11/3 o 6/5/2023, regime transitorio per le precedenti); soppressa la domanda diretta di protezione speciale; rinnovi fino a 3 anni."),

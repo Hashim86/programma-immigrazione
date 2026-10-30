@@ -146,7 +146,7 @@ PERMESSI_A = [
   lavoro="Sì: ricerca, insegnamento, lavoro subordinato e autonomo.",
   rinnovo="In caso di proroga del programma.",
   diniego=[R("Frode, venir meno delle condizioni")],
-  note=["Esenti dal test di italiano per il lungo periodo (art. 9 c.2-ter).", "Ricongiungimento indipendente dalla durata del permesso, esonero dal requisito di alloggio."],
+  note=["Esenti dal test di italiano per il lungo periodo (art. 9 c.2-ter).", "Ricongiungimento indipendente dalla durata del permesso, esonero dal requisito di alloggio.", "Mobilità UE: il ricercatore ammesso in un altro Stato UE può svolgere in Italia mobilità di breve durata (fino a 180 giorni su 360) con comunicazione, o di lunga durata con nulla osta."],
   conversioni=[C("lav_sub", "si", "Al termine della ricerca: permesso di 9-12 mesi per cercare lavoro o avviare impresa, convertibile in lavoro.", ["art. 27-ter c.9-bis TU 286/1998"]),
    C("lav_aut", "si", "Come sopra, con i requisiti dell'art. 26.", ["art. 27-ter c.9-bis TU 286/1998"]),
    C("lungo_periodo", "cond", "Dopo 5 anni con i requisiti dell'art. 9 (esenzione dal test A2).", ["art. 9 TU 286/1998"])]),
@@ -260,6 +260,7 @@ PERMESSI_A = [
 
  dict(id="fam_ue", nome="Carta di soggiorno per familiare di cittadino UE", breve="Familiare UE", categoria="Famiglia",
   alias=["familiare di cittadino ue", "familiare di cittadino comunitario", "carta di soggiorno familiare ue", "carta familiare", "familiare comunitario", "coniuge di cittadino ue", "coniuge comunitario", "30/2007", "italiano mobile", "familiare di comunitario", "familiare di un comunitario", "comunitario", "comunitaria", "cittadino comunitario", "cittadina comunitaria", "cittadino ue", "cittadina ue", "cittadino europeo", "cittadina europea", "rumeno", "rumena", "polacco", "polacca", "bulgaro", "bulgara"],
+  aliasDeboli=["comunitario", "comunitaria", "cittadino comunitario", "cittadina comunitaria", "cittadino ue", "cittadina ue", "cittadino europeo", "cittadina europea", "rumeno", "rumena", "polacco", "polacca", "bulgaro", "bulgara"],
   sintesi="Carta di soggiorno per il familiare extra-UE di un cittadino dell'Unione (o di un italiano che ha esercitato la libera circolazione e rientra).",
   norme=["art. 2 D.Lgs. 30/2007", "art. 10 D.Lgs. 30/2007", "art. 17 D.Lgs. 30/2007", "art. 12 D.Lgs. 30/2007", "art. 20 D.Lgs. 30/2007"],
   requisiti=[R("Vincolo familiare: coniuge, partner di unione registrata, discendenti under 21 o a carico, ascendenti a carico", "art. 2 D.Lgs. 30/2007"),
@@ -403,7 +404,7 @@ PERMESSI_A = [
    C("lungo_periodo", "cond", "Non è tra i permessi esclusi dall'art. 9 c.3: possibile con i requisiti dell'art. 9 (verificare la prassi).", ["art. 9 TU 286/1998"])]),
 
  dict(id="minore_eta", nome="Minore età e minori stranieri non accompagnati", breve="Minore età", categoria="Minori",
-  alias=["minore eta", "minore straniero non accompagnato", "msna", "minore non accompagnato", "minorenne", "minori", "neomaggiorenne", "compimento della maggiore eta", "18 anni", "diciotto anni", "maggiore eta", "affidamento", "minore affidato", "prosieguo amministrativo"],
+  alias=["minore eta", "minore straniero non accompagnato", "msna", "minore non accompagnato", "minorenne", "minori", "neomaggiorenne", "compimento della maggiore eta", "18 anni", "diciotto anni", "maggiore eta", "affidamento", "minore affidato"],
   sintesi="Permesso per minore età del minore straniero non accompagnato, e regole per il permesso al compimento dei 18 anni.",
   norme=["art. 19 c.2 lett. a TU 286/1998", "art. 32 TU 286/1998", "art. 10 L. 47/2017", "art. 28 c.1 lett. a DPR 394/1999"],
   competenza="Questore",
