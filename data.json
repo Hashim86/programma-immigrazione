@@ -1,5 +1,5 @@
 {
- "revisione": 6,
+ "revisione": 7,
  "dataISO": "2026-11-09",
  "aggiornamento": "2026-11-09",
  "appMinima": 2,
@@ -62,6 +62,14 @@
     "Art. 18-ter (sfruttamento lavorativo): nota sul decreto del Tribunale di Roma del 20/10/2026, secondo cui la ricevuta va rilasciata senza attendere il parere della Procura (decisione non vincolante).",
     "Lavoro subordinato e stagionale: date di precompilazione e di invio delle domande per i flussi 2027 (DPCM 2/10/2025).",
     "DL 168/2026 (documento del richiedente asilo valido 1 anno): ancora in esame alla Camera, da convertire entro il 28/11/2026."
+   ]
+  },
+  {
+   "revisione": 7,
+   "data": "2026-11-09",
+   "novita": [
+    "Riconoscimento delle domande migliorato: scrivendo «art. 18-ter», «art. 18-bis», «art. 27-bis» e simili il programma apre la scheda giusta invece di quella dell'articolo principale (prima apriva l'art. 18 o l'art. 27).",
+    "Una domanda sul «cittadino UE» apre ora la scheda Cittadini UE/SEE/svizzeri (nessun permesso, competenza del Comune) invece di quella del familiare di cittadino UE."
    ]
   }
  ],
@@ -283,7 +291,9 @@
     "grandi anziani",
     "assistenza socio sanitaria",
     "baby sitter",
-    "babysitter"
+    "babysitter",
+    "art 24 bis",
+    "articolo 24 bis"
    ],
    "sintesi": "Permesso per lavoro subordinato di chi entra fuori quota per assistere grandi anziani (over 80) o persone con disabilità. Sperimentazione confermata per il 2026-2028 con 10.000 ingressi l'anno.",
    "norme": [
@@ -756,7 +766,9 @@
     "altamente qualificato",
     "lavoratore altamente qualificato",
     "27-quater",
-    "27 quater"
+    "27 quater",
+    "art 27 quater",
+    "articolo 27 quater"
    ],
    "sintesi": "Permesso per lavoro altamente qualificato, fuori quota, disciplinato dal D.Lgs. 152/2023 (dir. UE 2021/1883).",
    "norme": [
@@ -858,7 +870,9 @@
     "ricercatori",
     "ricerca scientifica",
     "27-ter",
-    "27 ter"
+    "27 ter",
+    "art 27 ter",
+    "articolo 27 ter"
    ],
    "sintesi": "Permesso fuori quota per ricercatori selezionati da istituti iscritti nell'elenco del MUR con convenzione di accoglienza.",
    "norme": [
@@ -944,7 +958,12 @@
     "trasferimento intrasocietario",
     "27-quinquies",
     "27 quinquies",
-    "27-sexies"
+    "27-sexies",
+    "art 27 quinquies",
+    "articolo 27 quinquies",
+    "27 sexies",
+    "art 27 sexies",
+    "articolo 27 sexies"
    ],
    "sintesi": "Permesso per dirigenti, lavoratori specializzati e lavoratori in formazione trasferiti nell'ambito dello stesso gruppo di imprese.",
    "norme": [
@@ -1008,7 +1027,8 @@
     "nomadi digitali",
     "lavoratore da remoto",
     "lavoro da remoto",
-    "q-bis"
+    "q-bis",
+    "q bis"
    ],
    "sintesi": "Permesso per lavoratori altamente qualificati che lavorano da remoto, anche per datori esteri, senza nulla osta e fuori quota.",
    "norme": [
@@ -1215,7 +1235,9 @@
     "investitori",
     "investor visa",
     "26-bis",
-    "26 bis"
+    "26 bis",
+    "art 26 bis",
+    "articolo 26 bis"
    ],
    "sintesi": "Permesso per chi effettua investimenti o donazioni rilevanti in Italia (Investor Visa for Italy).",
    "norme": [
@@ -1303,11 +1325,11 @@
     "bambino italiano"
    ],
    "aliasDeboli": [
+    "coniuge",
     "familiare",
     "familiari",
-    "coniuge",
-    "moglie",
-    "marito"
+    "marito",
+    "moglie"
    ],
    "sintesi": "Permesso per motivi familiari rilasciato al familiare entrato per ricongiungimento o al seguito, a chi si sposa in Italia dopo un anno di soggiorno, per coesione familiare e al genitore di minore italiano.",
    "norme": [
@@ -1544,36 +1566,27 @@
     "italiano mobile",
     "familiare di comunitario",
     "familiare di un comunitario",
-    "comunitario",
     "comunitaria",
-    "cittadino comunitario",
     "cittadina comunitaria",
-    "cittadino ue",
-    "cittadina ue",
-    "cittadino europeo",
     "cittadina europea",
     "rumeno",
     "rumena",
     "polacco",
     "polacca",
     "bulgaro",
-    "bulgara"
+    "bulgara",
+    "30 2007"
    ],
    "aliasDeboli": [
-    "comunitario",
-    "comunitaria",
-    "cittadino comunitario",
-    "cittadina comunitaria",
-    "cittadino ue",
-    "cittadina ue",
-    "cittadino europeo",
-    "cittadina europea",
-    "rumeno",
-    "rumena",
-    "polacco",
-    "polacca",
+    "bulgara",
     "bulgaro",
-    "bulgara"
+    "cittadina comunitaria",
+    "cittadina europea",
+    "comunitaria",
+    "polacca",
+    "polacco",
+    "rumena",
+    "rumeno"
    ],
    "sintesi": "Carta di soggiorno per il familiare extra-UE di un cittadino dell'Unione (o di un italiano che ha esercitato la libera circolazione e rientra).",
    "norme": [
@@ -1963,7 +1976,9 @@
     "corso di formazione",
     "scuola secondaria",
     "39-bis",
-    "39 bis"
+    "39 bis",
+    "art 39 bis",
+    "articolo 39 bis"
    ],
    "sintesi": "Permesso per corsi di formazione professionale riconosciuti, tirocini formativi, scuole secondarie e programmi di scambio.",
    "norme": [
@@ -2044,7 +2059,10 @@
     "39-bis.1",
     "post laurea",
     "dopo la laurea",
-    "neolaureato"
+    "neolaureato",
+    "39 bis 1",
+    "art 39 bis 1",
+    "articolo 39 bis 1"
    ],
    "sintesi": "Permesso di 9-12 mesi per chi ha conseguito in Italia un titolo di studio superiore, per cercare lavoro o avviare un'impresa.",
    "norme": [
@@ -2275,7 +2293,8 @@
    "alias": [
     "pensionato",
     "pensione percepita in italia",
-    "c-quater"
+    "c-quater",
+    "c quater"
    ],
    "sintesi": "Permesso per residenza elettiva a favore dello straniero titolare di una pensione percepita in Italia.",
    "norme": [
@@ -2984,7 +3003,9 @@
     "umanitario",
     "umanitari",
     "ex umanitario",
-    "vita privata e familiare"
+    "vita privata e familiare",
+    "19 comma 1 1",
+    "art 19 c 1 1"
    ],
    "aliasDeboli": [
     "speciale"
@@ -3197,7 +3218,9 @@
     "18 bis",
     "violenza domestica",
     "vittima di violenza",
-    "maltrattamenti in famiglia"
+    "maltrattamenti in famiglia",
+    "art 18 bis",
+    "articolo 18 bis"
    ],
    "sintesi": "Permesso per le vittime di violenza domestica nel corso di procedimenti per reati di violenza in ambito familiare.",
    "norme": [
@@ -3288,7 +3311,16 @@
     "sfruttamento del lavoro",
     "603-bis",
     "22 comma 12-quater",
-    "12-quater"
+    "12-quater",
+    "art 18 ter",
+    "articolo 18 ter",
+    "603 bis",
+    "art 603 bis",
+    "articolo 603 bis",
+    "22 comma 12 quater",
+    "12 quater",
+    "art 12 quater",
+    "articolo 12 quater"
    ],
    "sintesi": "Permesso per i lavoratori stranieri vittime di intermediazione illecita e sfruttamento del lavoro (art. 603-bis c.p.) che contribuiscono all'emersione dei fatti. Sostituisce il permesso dell'art. 22 c.12-quater.",
    "norme": [
@@ -3377,7 +3409,8 @@
     "d-bis",
     "patologia",
     "malattia",
-    "malato"
+    "malato",
+    "d bis"
    ],
    "sintesi": "Permesso per chi versa in condizioni di salute derivanti da patologie di particolare gravità, non adeguatamente curabili nel Paese di origine.",
    "norme": [
@@ -3581,7 +3614,9 @@
     "20 bis",
     "disastro naturale",
     "alluvione",
-    "terremoto"
+    "terremoto",
+    "art 20 bis",
+    "articolo 20 bis"
    ],
    "sintesi": "Permesso quando il Paese di rientro è colpito da una calamità contingente ed eccezionale che non consente il rientro in sicurezza.",
    "norme": [
@@ -3639,7 +3674,9 @@
     "valore civile",
     "42-bis",
     "42 bis",
-    "atti di particolare valore civile"
+    "atti di particolare valore civile",
+    "art 42 bis",
+    "articolo 42 bis"
    ],
    "sintesi": "Permesso per lo straniero che ha compiuto atti di particolare valore civile, autorizzato dal Ministro dell'Interno su proposta del Prefetto.",
    "norme": [
@@ -3881,7 +3918,8 @@
     "programma di volontariato",
     "servizio volontario",
     "terzo settore",
-    "ets"
+    "ets",
+    "articolo 27 bis"
    ],
    "sintesi": "Permesso con dicitura 'volontario' per stranieri tra 25 e 35 anni ammessi a un programma di volontariato di interesse generale promosso da un ente autorizzato. Ingresso con nulla osta dello SUI nei limiti di un contingente, che dal DL 146/2025 è triennale. Non è rinnovabile né convertibile.",
    "norme": [
@@ -4039,7 +4077,8 @@
     "18.4",
     "carta di soggiorno britannici",
     "documento di soggiorno elettronico britannici",
-    "frontaliero britannico"
+    "frontaliero britannico",
+    "18 4"
    ],
    "aliasDeboli": [
     "inglese",
@@ -4182,10 +4221,10 @@
    ],
    "aliasDeboli": [
     "australiano",
-    "neozelandese",
     "canadese",
-    "giapponese",
     "coreano",
+    "giapponese",
+    "neozelandese",
     "sudcoreano"
    ],
    "sintesi": "Permesso per giovani cittadini di Paesi con cui l'Italia ha un accordo bilaterale vacanze-lavoro, entrati con visto 'vacanze-lavoro', per un soggiorno fino a 1 anno soprattutto turistico, con possibilità di lavorare per periodi limitati. Fuori quota.",
@@ -4323,7 +4362,8 @@
     "ventuno anni",
     "13 comma 2 legge 47",
     "legge zampa",
-    "c-sexies"
+    "c-sexies",
+    "c sexies"
    ],
    "aliasDeboli": [
     "integrazione"
@@ -4553,7 +4593,11 @@
     "art 22 251",
     "22 d.lgs. 251/2007",
     "29-bis",
-    "ricongiungimento rifugiato"
+    "ricongiungimento rifugiato",
+    "22 d lgs 251 2007",
+    "29 bis",
+    "art 29 bis",
+    "articolo 29 bis"
    ],
    "sintesi": "Al familiare del titolare dello status di rifugiato o di protezione sussidiaria, presente in Italia, che non ha diritto individualmente alla protezione, è rilasciato il permesso per motivi familiari ex art. 30 TU, con gli stessi diritti del familiare titolare.",
    "norme": [

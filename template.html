@@ -350,7 +350,7 @@ function attiva(d){
 function trovaPermessi(q){
   let t=" "+norm(q).replace(/[^a-z0-9]+/g," ")+" ";const usati=[];const trovati=[];
   for(const al of ALIAS){let from=0;const pat=" "+al.a+" ";let p;
-    while((p=t.indexOf(pat,from))>=0){const fine=p+pat.length;
+    while((p=t.indexOf(pat,from))>=0){const fine=p+pat.length-1;
       if(!usati.some(([s,e])=>p<e&&fine>s)){usati.push([p,fine]);trovati.push({id:al.id,pos:p,alias:al.a,debole:al.debole,prima:t.slice(Math.max(0,p-12),p)})}
       from=fine-1}}
   trovati.sort((a,b)=>a.pos-b.pos);

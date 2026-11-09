@@ -11,6 +11,8 @@ Programma offline di consultazione per l'Ufficio Immigrazione: permessi di soggi
 3. Eseguire `python3 gen.py && python3 build.py`.
 4. Fare commit e push di tutto (compresa la cartella `dist/`).
 
+Gli alias delle schede possono contenere punteggiatura ("18-ter"): `gen.py` aggiunge da solo le varianti senza punteggiatura e la forma "art 18 ter".
+
 Se si modifica `template.html` in modo che i dati nuovi richiedano il programma nuovo, aumentare `APP_VERSIONE` nel template e `appMinima` in `gen.py`: i PC con il programma vecchio vedranno l'avviso per scaricare la nuova versione.
 
 Le fonti delle ricerche sono in `ricerca/`.

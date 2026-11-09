@@ -12,6 +12,33 @@ except ImportError:
 PERMESSI_B = PERMESSI_B + PERMESSI_C
 RICONG = {**RICONG, **RICONG_C}
 FAQ = FAQ + FAQ_C
+import re, unicodedata
+def _norm(s):
+    s = unicodedata.normalize("NFD", s.lower())
+    return re.sub(r"[^a-z0-9]+", " ", "".join(c for c in s if not unicodedata.combining(c))).strip()
+# Il programma toglie la punteggiatura dalla domanda ma non dagli alias: si aggiungono
+# le varianti senza punteggiatura ("18-ter" -> "18 ter") e, per gli articoli con suffisso
+# latino, la forma "art 18 ter" (più lunga di "art 18", quindi riconosciuta per prima).
+SUFFISSI = r"(bis|ter|quater|quinquies|sexies|septies|octies)"
+_forti = {}
+for p in PERMESSI_A+PERMESSI_B:
+    for a in p.get("alias", []):
+        if a not in p.get("aliasDeboli", []): _forti.setdefault(_norm(a), set()).add(p["id"])
+for p in PERMESSI_A+PERMESSI_B:
+    alias, deboli = list(p.get("alias", [])), set(p.get("aliasDeboli", []))
+    # un alias debole che è alias forte di un'altra scheda non deve oscurarla
+    alias = [a for a in alias if not (a in deboli and _forti.get(_norm(a), set()) - {p["id"]})]
+    nuovi = []
+    for a in alias:
+        n = _norm(a)
+        var = [n] if n != a.lower() else []
+        if re.fullmatch(r"\d+ " + SUFFISSI + r"( \d+)?", n): var += ["art " + n, "articolo " + n]
+        for v in var:
+            if v not in alias and v not in nuovi:
+                nuovi.append(v)
+                if a in deboli: deboli.add(v)
+    if "alias" in p: p["alias"] = alias + nuovi
+    if "aliasDeboli" in p or deboli: p["aliasDeboli"] = sorted(d for d in deboli if d in p["alias"])
 for p in PERMESSI_A+PERMESSI_B:
     p.setdefault("conversioni", [])
     if p["id"] in RICONG: p["ricong"]=RICONG[p["id"]]
