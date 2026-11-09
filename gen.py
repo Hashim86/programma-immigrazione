@@ -18,7 +18,7 @@ for p in PERMESSI_A+PERMESSI_B:
 data = dict(
  revisione=STORICO[-1]["revisione"], dataISO=STORICO[-1]["data"], aggiornamento=STORICO[-1]["data"], appMinima=2, storico=STORICO,
  aggiornamenti=dict(url=[BASE+"dist/banca-dati.json", f"https://cdn.jsdelivr.net/gh/{OWN}/{REPO}@main/dist/banca-dati.json"] if OWN else [], programma=BASE+"dist/Programma%20Immigrazione.html" if OWN else ""),
- avvertenza="Strumento di supporto alla consultazione. Le schede sintetizzano la normativa vigente al 30/10/2026 sulla base di fonti consolidate non ufficiali e dossier istituzionali: prima di adottare un provvedimento verifica sempre il testo vigente (Normattiva/Gazzetta Ufficiale) e le circolari del Ministero dell'Interno. I punti indicati 'da verificare' non hanno conferma testuale certa.",
+ avvertenza="Strumento di supporto alla consultazione. Le schede sintetizzano la normativa vigente al 9/11/2026 sulla base di fonti consolidate non ufficiali e dossier istituzionali: prima di adottare un provvedimento verifica sempre il testo vigente (Normattiva/Gazzetta Ufficiale) e le circolari del Ministero dell'Interno. I punti indicati 'da verificare' non hanno conferma testuale certa.",
  permessi=PERMESSI_A+PERMESSI_B, norme=NORME, generali=GENERALI, faq=FAQ, esempi=ESEMPI,
  matriceColonne=["lav_sub","lav_aut","famiglia","studio","attesa_occ","lungo_periodo"],
  reddito=dict(assegnoSocialeAnnuo=7101.12, nota="Assegno sociale 2026: 546,24 € × 13 mensilità = 7.101,12 € (circ. INPS n. 153/2025). Aggiorna l'importo ogni anno. Concorre il reddito dei familiari conviventi; i titolari dello status di rifugiato sono esonerati dal requisito per il ricongiungimento (art. 29-bis).", norme=["art. 29 TU 286/1998","art. 9 TU 286/1998","art. 29-bis TU 286/1998"]))
