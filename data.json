@@ -1,7 +1,7 @@
 {
- "revisione": 7,
- "dataISO": "2026-11-09",
- "aggiornamento": "2026-11-09",
+ "revisione": 8,
+ "dataISO": "2026-11-16",
+ "aggiornamento": "2026-11-16",
  "appMinima": 2,
  "storico": [
   {
@@ -70,6 +70,16 @@
    "novita": [
     "Riconoscimento delle domande migliorato: scrivendo «art. 18-ter», «art. 18-bis», «art. 27-bis» e simili il programma apre la scheda giusta invece di quella dell'articolo principale (prima apriva l'art. 18 o l'art. 27).",
     "Una domanda sul «cittadino UE» apre ora la scheda Cittadini UE/SEE/svizzeri (nessun permesso, competenza del Comune) invece di quella del familiare di cittadino UE."
+   ]
+  },
+  {
+   "revisione": 8,
+   "data": "2026-11-16",
+   "novita": [
+    "DL 168/2026 (richiedenti asilo): la Camera ha approvato la conversione con modifiche il 12/11/2026; ora serve il voto del Senato entro il 28/11/2026. Le modifiche non sono ancora in vigore.",
+    "Ricongiungimento familiare: nella conversione del DL 168/2026 la Camera ha approvato una deroga ai 2 anni di soggiorno (art. 28 c.1-bis TU) per alcuni lavoratori altamente qualificati. Non è ancora legge: per ora resta la regola attuale.",
+    "Protezione temporanea Ucraina: segnalata la circolare Dip. P.S. n. 61981 del 7/8/2026 sulla proroga; il contenuto va verificato nei canali interni.",
+    "Flussi 2027: indicati gli estremi della circolare congiunta n. 7185 del 1/10/2026; le domande si possono inviare fino al 31/12/2027 nei limiti delle quote."
    ]
   }
  ],
@@ -180,7 +190,7 @@
     "D.Lgs. 83/2026 (dal 22/5/2026): permesso unico rilasciato entro 30 giorni dalla domanda completa; termini di rinnovo e conversione portati a 90 giorni; nuovi obblighi informativi del datore.",
     "DL 146/2025 (L. 179/2025): si può lavorare anche nelle more della conversione; massimo 3 domande di nulla osta per datore privato; contratto di soggiorno entro 15 giorni dall'ingresso; termini del nulla osta dalla data di assegnazione della quota.",
     "DL 20/2023 (L. 50/2023): rinnovo fino a 3 anni per il tempo indeterminato.",
-    "Flussi 2027 (DPCM 2/10/2025, quote 2026-2028): precompilazione delle domande di nulla osta dal 23/10 al 7/12/2026; invio dal 16/2/2027 per il non stagionale e dal 18/2/2027 per l'assistenza familiare in quota (circolare congiunta dei Ministeri, ottobre 2026)."
+    "Flussi 2027 (DPCM 2/10/2025, quote 2026-2028): precompilazione delle domande di nulla osta dal 23/10 al 7/12/2026; invio dal 16/2/2027 per il non stagionale e dal 18/2/2027 per l'assistenza familiare in quota (circolare congiunta dei Ministeri n. 7185 del 1/10/2026; domande fino al 31/12/2027 nei limiti delle quote)."
    ],
    "note": [
     "Il cambio di datore di lavoro è libero (comunicazione obbligatoria), salvo assistenza familiare ex art. 24-bis e Carta blu nei primi 12 mesi.",
@@ -1424,7 +1434,8 @@
    "note": [
     "Rifugiati (art. 29-bis): non servono requisiti di alloggio e reddito; estensione alla protezione sussidiaria da verificare.",
     "Il permesso per famiglia consente già di lavorare: la conversione in lavoro è prevista dall'art. 30 c.5 nei casi di morte del familiare, separazione legale, scioglimento del matrimonio o compimento dei 18 anni del figlio.",
-    "Il partner unito civilmente è equiparato al coniuge (L. 76/2016)."
+    "Il partner unito civilmente è equiparato al coniuge (L. 76/2016).",
+    "In corso: la Camera ha approvato il 12/11/2026, nella conversione del DL 168/2026, una deroga al requisito dei 2 anni di soggiorno (art. 28 c.1-bis) per alcuni lavoratori altamente qualificati (es. dirigenti, ricercatori). Non è ancora legge: categorie esatte e decorrenza da verificare dopo il voto del Senato e la pubblicazione in GU. Fino ad allora si applica la regola attuale."
    ],
    "conversioni": [
     {
@@ -2749,10 +2760,11 @@
    ],
    "novita": [
     "DL 100/2026 conv. L. 145/2026: documento al posto del permesso; lavoro dopo 90 giorni dalla formalizzazione; abrogato l'art. 22 c.2 D.Lgs. 142/2015.",
-    "DL 168/2026 (in corso di conversione, scadenza 28/11/2026): fase transitoria prorogata al 30/4/2027 e documento valido 1 anno."
+    "DL 168/2026 (in corso di conversione, scadenza 28/11/2026): fase transitoria prorogata al 30/4/2027 e documento valido 1 anno. Approvato dalla Camera con modifiche il 12/11/2026, ora al Senato."
    ],
    "note": [
     "Il DL 168/2026 non è ancora convertito in legge: se decadesse, il regime transitorio cesserebbe. Verificare lo stato dopo il 28/11/2026.",
+    "Modifiche approvate dalla Camera il 12/11/2026 (non ancora in vigore, testo definitivo da verificare dopo il voto del Senato e la pubblicazione in GU): niente fermo per accertamenti per lo straniero irregolare che si presenta spontaneamente a chiedere protezione; le Commissioni territoriali possono ricevere le manifestazioni di volontà anche tramite soggetti esterni convenzionati.",
     "Circ. Min. Interno 21/9/2026: non si può pretendere il vecchio permesso per richiesta asilo per l'accesso a servizi e prestazioni.",
     "Domanda gratuita: nessun contributo né marca da bollo."
    ],
@@ -3772,7 +3784,8 @@
    "note": [
     "Escluso dal permesso unico (art. 5 c.8.2 lett. e).",
     "Escluso dal permesso UE di lungo periodo.",
-    "Prova degli obblighi militari: la decisione UE indica come esempi il timbro di uscita legale dall'Ucraina o un documento ufficiale verificabile; istruzioni del Ministero dell'Interno non ancora pubblicate (da verificare)."
+    "Prova degli obblighi militari: la decisione UE indica come esempi il timbro di uscita legale dall'Ucraina o un documento ufficiale verificabile; istruzioni del Ministero dell'Interno non ancora pubblicate (da verificare).",
+    "Segnalata la circolare del Dipartimento della P.S. (Direzione centrale immigrazione e polizia delle frontiere) n. 61981 del 7/8/2026 «Proroga della protezione temporanea agli sfollati dall'Ucraina»: contenuto non verificato, consultarla nei canali interni prima di applicare nuove regole sul rinnovo."
    ],
    "conversioni": [
     {
@@ -5421,7 +5434,7 @@
     {
      "n": "DL 168/2026",
      "r": "In corso di conversione (scadenza 28/11/2026)",
-     "s": "Fase transitoria asilo prorogata al 30/4/2027; documento del richiedente valido 1 anno."
+     "s": "Fase transitoria asilo prorogata al 30/4/2027; documento del richiedente valido 1 anno. Approvato dalla Camera con modifiche il 12/11/2026 (tra cui una deroga ai 2 anni di soggiorno per il ricongiungimento dei lavoratori altamente qualificati), ora all'esame del Senato."
     }
    ]
   }
@@ -5779,7 +5792,7 @@
   },
   {
    "q": "Quanto dura il documento del richiedente asilo?",
-   "a": "1 anno dalla registrazione, rinnovabile, in base al DL 168/2026 (in corso di conversione, scadenza 28/11/2026). Il testo originario del DL 100/2026 prevedeva 6 mesi.",
+   "a": "1 anno dalla registrazione, rinnovabile, in base al DL 168/2026 (in corso di conversione, scadenza 28/11/2026; approvato dalla Camera il 12/11/2026, ora al Senato). Il testo originario del DL 100/2026 prevedeva 6 mesi.",
    "norme": [
     "art. 4 D.Lgs. 142/2015",
     "DL 168/2026"
